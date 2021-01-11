@@ -1,6 +1,6 @@
 import { IsInt, IsNotEmpty, IsOptional } from 'class-validator';
 
-export class Player {
+export class PlayerEntity {
   @IsNotEmpty()
   id: number;
 

@@ -1,15 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Player } from '../entities/player';
+import { PlayerEntity } from './entities/player.entity';
 
 @Injectable()
 export class PlayerService {
-  private players: Player[] = [];
+  private players: PlayerEntity[] = [];
 
-  getPlayers(): Player[] {
+  getPlayers(): PlayerEntity[] {
     return this.players;
   }
 
-  getPlayerById(id: number): Player {
+  getPlayerById(id: number): PlayerEntity {
     const playerToGet = this.players.find((player) => player.id === id);
     if (!!playerToGet) {
       return playerToGet;
@@ -18,9 +18,13 @@ export class PlayerService {
     }
   }
 
-  createPlayer(player: Player): Player {
+  createPlayer(player: PlayerEntity): PlayerEntity {
     player.createdAt = new Date();
     this.players.push(player);
     return player;
+  }
+
+  updatePlayer(id: number, player: PlayerEntity) {
+    return undefined;
   }
 }
