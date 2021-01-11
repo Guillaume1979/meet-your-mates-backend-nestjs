@@ -1,1 +1,4 @@
-export class CreateGuildDto {}
+export class CreateGuildDto {
+  id: number;
+  name: string;
+}

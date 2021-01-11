@@ -1,9 +1,28 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PlayerEntity } from './entities/player.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PlayerService {
   private players: PlayerEntity[] = [];
+
+  constructor(
+    @InjectRepository(PlayerEntity)
+    private readonly playerRepository: Repository<PlayerEntity>,
+  ) {
+    const firstPlayer: PlayerEntity = {
+      id: 1,
+      username: 'Guitou',
+      age: 41,
+    };
+    this.createPlayer(firstPlayer);
+    this.createPlayer({
+      id: 2,
+      username: 'Germain',
+      age: 37,
+    });
+  }
 
   getPlayers(): PlayerEntity[] {
     return this.players;
@@ -18,13 +37,12 @@ export class PlayerService {
     }
   }
 
-  createPlayer(player: PlayerEntity): PlayerEntity {
+  createPlayer(player: PlayerEntity): Promise<PlayerEntity> {
     player.createdAt = new Date();
-    this.players.push(player);
-    return player;
+    return this.playerRepository.save(player);
   }
 
   updatePlayer(id: number, player: PlayerEntity) {
-    return undefined;
+    return 'toto';
   }
 }

@@ -17,13 +17,13 @@ export class PlayerController {
   }
 
   @Post()
-  createPlayer(@Body() newPlayer: PlayerEntity): PlayerEntity {
+  createPlayer(@Body() newPlayer: PlayerEntity): Promise<PlayerEntity> {
     console.log(newPlayer);
     return this.playerService.createPlayer(newPlayer);
   }
 
   @Put(':id')
-  updatePLayer(@Param('id', ParseIntPipe) id: number, @Body() player : PlayerEntity): PlayerEntity {
+  updatePLayer(@Param('id', ParseIntPipe) id: number, @Body() player : PlayerEntity) {
     return this.playerService.updatePlayer(id, player);
   }
 }
