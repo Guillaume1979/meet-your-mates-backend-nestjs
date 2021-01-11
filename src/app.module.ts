@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PlayerModule } from './player/player.module';
 import { GuildModule } from './guild/guild.module';
-import { PlayerEntity } from './player/entities/player.entity';
 
 @Module({
   imports: [
@@ -15,9 +14,10 @@ import { PlayerEntity } from './player/entities/player.entity';
       username: 'postgres',
       password: 'coucou',
       database: 'meet_your_mates',
-      entities: [PlayerEntity],
-      autoLoadEntities: false,
+      entities: [],
+      autoLoadEntities: true,
       synchronize: true,
+      dropSchema: true,
     }),
     PlayerModule,
     GuildModule,

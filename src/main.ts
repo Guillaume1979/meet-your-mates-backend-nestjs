@@ -17,6 +17,7 @@ async function bootstrap() {
       transform: true,
       // suppress all attributes in the Json which doesn't correspond to my entities attributes
       whitelist: true,
+      forbidNonWhitelisted: true,
     }),
   );
   await app.listen(3000);

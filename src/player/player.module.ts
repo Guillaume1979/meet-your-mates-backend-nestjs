@@ -2,11 +2,11 @@ import { Global, Module } from '@nestjs/common';
 import { PlayerController } from './player.controller';
 import { PlayerService } from './player.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PlayerEntity } from './entities/player.entity';
+import { Player } from './entities/player';
 
 @Global()
 @Module({
-  imports: [TypeOrmModule.forFeature([PlayerEntity])],
+  imports: [TypeOrmModule.forFeature([Player])],
   controllers: [PlayerController],
   providers: [PlayerService],
 })

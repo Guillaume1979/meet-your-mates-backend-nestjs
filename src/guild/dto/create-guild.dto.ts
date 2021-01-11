@@ -1,4 +1,7 @@
+import { IsInt, IsNotEmpty, IsOptional } from 'class-validator';
+
 export class CreateGuildDto {
-  id: number;
+  @IsNotEmpty()
   name: string;
+
 }
