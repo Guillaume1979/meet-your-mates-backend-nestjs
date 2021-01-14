@@ -3,7 +3,7 @@ import { CreatePlayerDto } from './create-player.dto';
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class UpdatePlayerDto extends PartialType(CreatePlayerDto) {
-  @IsNotEmpty()
   @IsNumber()
+  @IsNotEmpty()
   id: number;
 }

@@ -3,21 +3,24 @@ import {
   IsInt,
   IsNotEmpty,
   IsOptional,
+  IsString,
   MaxLength,
   MinLength,
 } from 'class-validator';
 
 export class CreatePlayerDto {
-  @IsNotEmpty()
   @MinLength(3)
   @MaxLength(20)
+  @IsString()
+  @IsNotEmpty()
   username: string;
 
   @IsEmail()
+  @IsString()
   @IsNotEmpty()
   email: string;
 
-  @IsOptional()
   @IsInt()
+  @IsOptional()
   age: number;
 }
