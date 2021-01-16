@@ -30,6 +30,21 @@ export class PlayerService {
         email: 'germain@mym.fr',
         age: 37,
       },
+      {
+        username: 'Pinou',
+        email: 'pinou@mym.fr',
+        age: 9,
+      },
+      {
+        username: 'Capucine',
+        email: 'capucine@mym.fr',
+        age: 11,
+      },
+      {
+        username: 'Raphy',
+        email: 'raphy@mym.fr',
+        age: 11,
+      },
     ];
     this.playerRepository.clear();
     this.playerRepository.save(_players);
@@ -43,7 +58,7 @@ export class PlayerService {
       .createQueryBuilder()
       .select()
       .skip(skippedItems)
-      .limit(paginationDto.limit)
+      .take(paginationDto.limit)
       .getMany();
     return {
       limit: paginationDto.limit,
@@ -54,8 +69,8 @@ export class PlayerService {
     };
   }
 
-  getPlayerById(id: number): Promise<Player> {
-    const playerToGet = this.playerRepository.findOne(id);
+  async getPlayerById(id: number): Promise<Player> {
+    const playerToGet = await this.playerRepository.findOne(id);
     if (!!playerToGet) {
       return playerToGet;
     } else {

@@ -27,9 +27,6 @@ export class PlayerController {
 
   @Get()
   getPlayers(@Query() paginationDto: PaginationDto) {
-    paginationDto.limit = +paginationDto.limit;
-    paginationDto.limit = paginationDto.limit > 100 ? 100 : paginationDto.limit;
-    paginationDto.page = +paginationDto.page;
     return this.playerService.getPlayers(paginationDto);
   }
 
