@@ -3,9 +3,12 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as morgan from 'morgan';
 import * as helmet from 'helmet';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
+  const port = configService.get('APP_PORT');
   app.use(morgan('dev'));
   app.use(helmet());
   app.enableCors({
@@ -20,6 +23,7 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-  await app.listen(3000);
+  await app.listen(port);
+  console.log(`Server started on port : ${port}`);
 }
 bootstrap();
