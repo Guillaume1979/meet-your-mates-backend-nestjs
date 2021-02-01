@@ -10,52 +10,65 @@ import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { PaginationDto } from '../generic/pagination.dto';
 import { PaginatedResultDto } from '../generic/paginated-result.dto';
+import { Guild } from '../guild/entities/guild.entity';
 
 @Injectable()
 export class PlayerService {
-
   constructor(
     @InjectRepository(Player)
     private readonly playerRepository: Repository<Player>,
   ) {
-    const _players: Partial<Player>[] = [
+    this.initBdd();
+  }
+
+  private async initBdd(): Promise<void> {
+    const _players: Player[] = [
       {
         username: 'Guitou',
         email: 'guitou@mym.fr',
         age: 41,
         password: 'toto',
         role: 'admin',
-      },
-      {
-        username: 'Germain',
-        email: 'germain@mym.fr',
-        age: 37,
-        password: 'toto',
-        role: 'user',
-      },
-      {
-        username: 'Pinou',
-        email: 'pinou@mym.fr',
-        age: 9,
-        password: 'toto',
-        role: 'user',
-      },
-      {
-        username: 'Capucine',
-        email: 'capucine@mym.fr',
-        age: 11,
-        password: 'toto',
-        role: 'user',
-      },
-      {
-        username: 'Raphy',
-        email: 'raphy@mym.fr',
-        age: 11,
-        password: 'toto',
-        role: 'user',
-      },
+        guilds: [],
+      } as Player,
+      // {
+      //   username: 'Germain',
+      //   email: 'germain@mym.fr',
+      //   age: 37,
+      //   password: 'toto',
+      //   role: 'user',
+      // },
+      // {
+      //   username: 'Pinou',
+      //   email: 'pinou@mym.fr',
+      //   age: 9,
+      //   password: 'toto',
+      //   role: 'user',
+      // },
+      // {
+      //   username: 'Capucine',
+      //   email: 'capucine@mym.fr',
+      //   age: 11,
+      //   password: 'toto',
+      //   role: 'user',
+      // },
+      // {
+      //   username: 'Raphy',
+      //   email: 'raphy@mym.fr',
+      //   age: 11,
+      //   password: 'toto',
+      //   role: 'user',
+      // },
     ];
-    this.playerRepository.save(_players);
+
+    _players.forEach((player) => {
+      player.guilds = [
+        { name: 'La Guilde de Toto' } as Guild,
+        { name: "L'autre guilde" } as Guild,
+      ];
+      // player.guilds.push({ name: 'test' } as Guild);
+    });
+    const load = await this.playerRepository.save(_players);
   }
 
   private async findPlayerById(playerId: number): Promise<Player> {

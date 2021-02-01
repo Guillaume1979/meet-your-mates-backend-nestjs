@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
 import { TimestampEntities } from '../../generic/timestamp-entities';
 import { PlayerRoleEnum } from '../../enums/player-role.enum';
+import { Guild } from '../../guild/entities/guild.entity';
 
 @Entity()
 export class Player extends TimestampEntities {
@@ -29,4 +30,12 @@ export class Player extends TimestampEntities {
     nullable: true,
   })
   role: string;
+
+  @ManyToMany((type) => Guild, (guild) => guild.players, {
+    eager: true,
+    nullable: true,
+    cascade: true,
+  })
+  @JoinTable()
+  guilds: Guild[];
 }
