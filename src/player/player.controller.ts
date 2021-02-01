@@ -20,11 +20,6 @@ import { PaginationDto } from '../generic/pagination.dto';
 export class PlayerController {
   constructor(private readonly playerService: PlayerService) {}
 
-  // @Get()
-  // getPlayers(): Promise<Player[]> {
-  //   return this.playerService.getPlayers();
-  // }
-
   @Get()
   getPlayers(@Query() paginationDto: PaginationDto) {
     return this.playerService.getPlayers(paginationDto);

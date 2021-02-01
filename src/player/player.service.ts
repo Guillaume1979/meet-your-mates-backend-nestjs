@@ -13,41 +13,57 @@ import { PaginatedResultDto } from '../generic/paginated-result.dto';
 
 @Injectable()
 export class PlayerService {
-  private players: Player[] = [];
 
   constructor(
     @InjectRepository(Player)
     private readonly playerRepository: Repository<Player>,
   ) {
-    const _players: CreatePlayerDto[] = [
+    const _players: Partial<Player>[] = [
       {
         username: 'Guitou',
         email: 'guitou@mym.fr',
         age: 41,
+        password: 'toto',
+        role: 'admin',
       },
       {
         username: 'Germain',
         email: 'germain@mym.fr',
         age: 37,
+        password: 'toto',
+        role: 'user',
       },
       {
         username: 'Pinou',
         email: 'pinou@mym.fr',
         age: 9,
+        password: 'toto',
+        role: 'user',
       },
       {
         username: 'Capucine',
         email: 'capucine@mym.fr',
         age: 11,
+        password: 'toto',
+        role: 'user',
       },
       {
         username: 'Raphy',
         email: 'raphy@mym.fr',
         age: 11,
+        password: 'toto',
+        role: 'user',
       },
     ];
-    this.playerRepository.clear();
     this.playerRepository.save(_players);
+  }
+
+  private async findPlayerById(playerId: number): Promise<Player> {
+    const player = await this.playerRepository.findOne(playerId);
+    if (!player) {
+      throw new NotFoundException('Player not found');
+    }
+    return player;
   }
 
   async getPlayers(paginationDto: PaginationDto): Promise<PaginatedResultDto> {
@@ -70,12 +86,13 @@ export class PlayerService {
   }
 
   async getPlayerById(id: number): Promise<Player> {
-    const playerToGet = await this.playerRepository.findOne(id);
-    if (!!playerToGet) {
-      return playerToGet;
-    } else {
-      throw new NotFoundException();
-    }
+    // const playerToGet = await this.playerRepository.findOne(id);
+    // if (!!playerToGet) {
+    //   return playerToGet;
+    // } else {
+    //   throw new NotFoundException();
+    // }
+    return this.findPlayerById(id);
   }
 
   getPlayersWithDeleted(): Promise<Player[]> {
@@ -93,7 +110,7 @@ export class PlayerService {
     const playerToUpdate = await this.playerRepository.findOne(id);
     if (!!playerToUpdate) {
       await this.playerRepository.save(player);
-      return this.playerRepository.findOne(player.id);
+      return this.playerRepository.findOne(id);
     } else {
       throw new NotFoundException('player to update not found');
     }
@@ -107,4 +124,10 @@ export class PlayerService {
       throw new NotFoundException('Player to delete not found');
     }
   }
+
+  // async register(userData: UserRegistrationDto): Promise<Player> {
+  //   const user = this.playerRepository.create({
+  //     ...userData
+  //   });
+  // }
 }
