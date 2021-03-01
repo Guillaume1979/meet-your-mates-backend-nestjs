@@ -1,7 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 import { TimestampEntities } from '../../generic/timestamp-entities';
 import { PlayerRoleEnum } from '../../enums/player-role.enum';
 import { Guild } from '../../guild/entities/guild.entity';
+import { TechnicalRole } from '../../technical-role/technical.role';
 
 @Entity()
 export class Player extends TimestampEntities {
@@ -17,24 +24,18 @@ export class Player extends TimestampEntities {
   @Column({ nullable: true })
   age: number;
 
-  @Column({ nullable: true }) // nullable à revoir quand utilisation oauth2
-  password: string;
-
-  @Column({ nullable: true }) // nullable à revoir quand utilisation oauth2
-  salt: string;
-
-  @Column({
-    type: 'enum',
-    enum: PlayerRoleEnum,
-    default: PlayerRoleEnum.USER,
-    nullable: true,
+  @ManyToMany(() => TechnicalRole, (technicalRole) => technicalRole.players, {
+    eager: true,
+    nullable: false,
+    cascade: true,
   })
-  role: string;
+  @JoinTable()
+  technicalRoles: TechnicalRole[];
 
   @ManyToMany((type) => Guild, (guild) => guild.players, {
     eager: true,
     nullable: true,
-    cascade: true,
+    // cascade: true,
   })
   @JoinTable()
   guilds: Guild[];

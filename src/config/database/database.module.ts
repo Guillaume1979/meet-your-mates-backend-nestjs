@@ -20,7 +20,7 @@ dotenv.config();
           entities: [],
           autoLoadEntities: true,
           synchronize: true,
-          dropSchema: true,
+          dropSchema: configService.get('DB_DROPSCHEMA'),
         } as TypeOrmModuleAsyncOptions),
       inject: [ConfigService],
     }),

@@ -10,66 +10,13 @@ import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { PaginationDto } from '../generic/pagination.dto';
 import { PaginatedResultDto } from '../generic/paginated-result.dto';
-import { Guild } from '../guild/entities/guild.entity';
 
 @Injectable()
 export class PlayerService {
   constructor(
     @InjectRepository(Player)
     private readonly playerRepository: Repository<Player>,
-  ) {
-    this.initBdd();
-  }
-
-  private async initBdd(): Promise<void> {
-    const _players: Player[] = [
-      {
-        username: 'Guitou',
-        email: 'guitou@mym.fr',
-        age: 41,
-        password: 'toto',
-        role: 'admin',
-        guilds: [],
-      } as Player,
-      // {
-      //   username: 'Germain',
-      //   email: 'germain@mym.fr',
-      //   age: 37,
-      //   password: 'toto',
-      //   role: 'user',
-      // },
-      // {
-      //   username: 'Pinou',
-      //   email: 'pinou@mym.fr',
-      //   age: 9,
-      //   password: 'toto',
-      //   role: 'user',
-      // },
-      // {
-      //   username: 'Capucine',
-      //   email: 'capucine@mym.fr',
-      //   age: 11,
-      //   password: 'toto',
-      //   role: 'user',
-      // },
-      // {
-      //   username: 'Raphy',
-      //   email: 'raphy@mym.fr',
-      //   age: 11,
-      //   password: 'toto',
-      //   role: 'user',
-      // },
-    ];
-
-    _players.forEach((player) => {
-      player.guilds = [
-        { name: 'La Guilde de Toto' } as Guild,
-        { name: "L'autre guilde" } as Guild,
-      ];
-      // player.guilds.push({ name: 'test' } as Guild);
-    });
-    const load = await this.playerRepository.save(_players);
-  }
+  ) {}
 
   private async findPlayerById(playerId: number): Promise<Player> {
     const player = await this.playerRepository.findOne(playerId);
@@ -84,8 +31,11 @@ export class PlayerService {
     const totalPlayers = await this.playerRepository.count();
     const totalPages = Math.ceil(totalPlayers / paginationDto.limit);
     const players = await this.playerRepository
-      .createQueryBuilder()
-      .select()
+      .createQueryBuilder('player')
+      // add relation with technical role to obtain the role of the player
+      .leftJoinAndSelect('player.technicalRoles', 'technicalRoles')
+      // add relation to get the player's guilds
+      .leftJoinAndSelect('player.guilds', 'guilds')
       .skip(skippedItems)
       .take(paginationDto.limit)
       .getMany();
