@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Player } from '../player/entities/player';
+import { Player } from '../player/entities/player.entity';
 
 @Entity()
 export class TechnicalRole {

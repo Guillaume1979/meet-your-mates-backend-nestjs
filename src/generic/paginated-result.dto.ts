@@ -1,4 +1,4 @@
-import { Player } from '../player/entities/player';
+import { Player } from '../player/entities/player.entity';
 
 export class PaginatedResultDto {
   limit: number;

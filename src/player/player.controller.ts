@@ -11,7 +11,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { PlayerService } from './player.service';
-import { Player } from './entities/player';
+import { Player } from './entities/player.entity';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { PaginationDto } from '../generic/pagination.dto';

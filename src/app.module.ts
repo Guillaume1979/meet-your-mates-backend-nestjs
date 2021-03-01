@@ -7,7 +7,7 @@ import { DatabaseModule } from './config/database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { DataLoadingService } from './data-loading.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Player } from './player/entities/player';
+import { Player } from './player/entities/player.entity';
 import { Guild } from './guild/entities/guild.entity';
 import { TechnicalRoleModule } from './technical-role/technical-role.module';
 import { TechnicalRole } from './technical-role/technical.role';

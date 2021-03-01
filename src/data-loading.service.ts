@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Player } from './player/entities/player';
+import { Player } from './player/entities/player.entity';
 import { Guild } from './guild/entities/guild.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
