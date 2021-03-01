@@ -3,7 +3,6 @@ import { Player } from './player/entities/player';
 import { Guild } from './guild/entities/guild.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { PlayerRoleEnum } from './enums/player-role.enum';
 import { TechnicalRole } from './technical-role/technical.role';
 
 @Injectable()
