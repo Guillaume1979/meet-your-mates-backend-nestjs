@@ -11,7 +11,7 @@ export class AuthController {
   @Get('login')
   @UseGuards(DiscordAuthGuard)
   login() {
-    return;
+    return 'OK';
   }
 
   /**

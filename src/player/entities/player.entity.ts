@@ -20,7 +20,8 @@ export class Player extends TimestampEntities {
   @Column({ nullable: false })
   email: string;
 
-  @Column({ nullable: true })
+  // TODO : revoir le nullable
+  @Column({ unique: true, nullable: true })
   discordId: string;
 
   @Column({ nullable: true })

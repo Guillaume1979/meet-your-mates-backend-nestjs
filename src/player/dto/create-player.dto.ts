@@ -1,6 +1,5 @@
 import {
   IsEmail,
-  IsInt,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -9,8 +8,8 @@ import {
 } from 'class-validator';
 
 export class CreatePlayerDto {
-  @MinLength(3)
-  @MaxLength(20)
+  // @MinLength(3)
+  // @MaxLength(20)
   @IsString()
   @IsNotEmpty()
   username: string;
@@ -20,7 +19,11 @@ export class CreatePlayerDto {
   @IsNotEmpty()
   email: string;
 
-  @IsInt()
+  @IsString()
+  @IsNotEmpty()
+  discordId: string;
+
+  @IsString()
   @IsOptional()
-  age: number;
+  avatar: string;
 }

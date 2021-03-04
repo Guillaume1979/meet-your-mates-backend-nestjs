@@ -13,13 +13,13 @@ import { TechnicalRoleModule } from './technical-role/technical-role.module';
 import { TechnicalRole } from './technical-role/technical.role';
 import { AuthModule } from './auth/auth.module';
 
-const envFilePath =
+const environment =
   process.env.ENVIRONMENT === 'prod' ? '.env.prod' : '.env.dev';
-
+console.log('environement = ', environment);
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['.env', envFilePath],
+      envFilePath: ['.env', environment],
       isGlobal: true,
     }),
     TypeOrmModule.forFeature([Player, Guild, TechnicalRole]),
