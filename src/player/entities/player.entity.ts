@@ -21,6 +21,12 @@ export class Player extends TimestampEntities {
   email: string;
 
   @Column({ nullable: true })
+  discordId: string;
+
+  @Column({ nullable: true })
+  avatar: string;
+
+  @Column({ nullable: true })
   age: number;
 
   @ManyToMany(() => TechnicalRole, (technicalRole) => technicalRole.players, {

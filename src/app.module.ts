@@ -11,11 +11,15 @@ import { Player } from './player/entities/player.entity';
 import { Guild } from './guild/entities/guild.entity';
 import { TechnicalRoleModule } from './technical-role/technical-role.module';
 import { TechnicalRole } from './technical-role/technical.role';
+import { AuthModule } from './auth/auth.module';
+
+const envFilePath =
+  process.env.ENVIRONMENT === 'prod' ? '.env.prod' : '.env.dev';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ['.env', '.env.prod', '.env.dev'],
+      envFilePath: ['.env', envFilePath],
       isGlobal: true,
     }),
     TypeOrmModule.forFeature([Player, Guild, TechnicalRole]),
@@ -23,6 +27,7 @@ import { TechnicalRole } from './technical-role/technical.role';
     GuildModule,
     DatabaseModule,
     TechnicalRoleModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, DataLoadingService],
