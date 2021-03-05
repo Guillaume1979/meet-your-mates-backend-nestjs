@@ -5,7 +5,7 @@ import { DiscordStrategy } from './strategies/discord.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Player } from '../player/entities/player.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './constants';
+import { jwtConstants } from './utils/constants';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth-guard';

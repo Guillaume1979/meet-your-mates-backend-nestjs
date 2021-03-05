@@ -3,6 +3,7 @@ import { DiscordAuthGuard } from './guards/discord.guard';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth-guard';
+import { Public } from "./utils/public-decorator";
 
 @Controller('auth')
 export class AuthController {
@@ -11,6 +12,7 @@ export class AuthController {
    * GET /api/auth/login
    * This is the route the user will visit to authenticate
    */
+  @Public()
   @Get('login')
   @UseGuards(DiscordAuthGuard)
   login() {
@@ -21,6 +23,7 @@ export class AuthController {
    * GET /api/auth/redirect
    * This is the redirect URL the OAuth2 provider will call
    */
+  @Public()
   @Get('redirect')
   @UseGuards(DiscordAuthGuard)
   redirect(@Req() req) {
