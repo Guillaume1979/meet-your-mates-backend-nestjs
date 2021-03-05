@@ -6,19 +6,27 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Player } from '../player/entities/player.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
-import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './guards/jwt-auth-guard';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Player]),
-    PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '3600s' },
     }),
   ],
-  providers: [AuthService, DiscordStrategy, JwtStrategy],
+  providers: [
+    AuthService,
+    DiscordStrategy,
+    JwtStrategy,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
   controllers: [AuthController],
 })
 export class AuthModule {}
