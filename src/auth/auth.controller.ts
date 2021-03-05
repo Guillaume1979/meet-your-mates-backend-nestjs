@@ -1,9 +1,12 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Req, Request, Res, UseGuards } from "@nestjs/common";
 import { DiscordAuthGuard } from './guards/discord.guard';
-import { Response } from "express";
+import { Response } from 'express';
+import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './guards/jwt-auth-guard';
 
 @Controller('auth')
 export class AuthController {
+  constructor(private readonly authService: AuthService) {}
   /**
    * GET /api/auth/login
    * This is the route the user will visit to authenticate
@@ -11,7 +14,7 @@ export class AuthController {
   @Get('login')
   @UseGuards(DiscordAuthGuard)
   login() {
-    return 'OK';
+    return;
   }
 
   /**
@@ -20,8 +23,8 @@ export class AuthController {
    */
   @Get('redirect')
   @UseGuards(DiscordAuthGuard)
-  redirect(@Res() res: Response) {
-    res.send(200);
+  redirect(@Req() req) {
+    return this.authService.login(req.user);
   }
 
   /**
@@ -29,7 +32,10 @@ export class AuthController {
    * Retrieve the auth status
    */
   @Get('status')
-  status() {}
+  @UseGuards(JwtAuthGuard)
+  status(@Request() req) {
+    return req.user;
+  }
 
   /**
    * GET /api/auth/logout

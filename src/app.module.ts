@@ -15,7 +15,7 @@ import { AuthModule } from './auth/auth.module';
 
 const environment =
   process.env.ENVIRONMENT === 'prod' ? '.env.prod' : '.env.dev';
-console.log('environement = ', environment);
+
 @Module({
   imports: [
     ConfigModule.forRoot({

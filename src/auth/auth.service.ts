@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Player } from '../player/entities/player.entity';
 import { Repository } from 'typeorm';
@@ -18,8 +18,7 @@ export class AuthService {
     const { discordId } = user;
     const player: Player = await this.playerRepository.findOne({ discordId });
     if (player) return player;
-    throw new NotFoundException('Player not found and to create');
-    const newUser = await this.createUser(user);
+    return this.createUser(user);
   }
 
   async createUser(user: UserDetails): Promise<Player> {
@@ -35,7 +34,7 @@ export class AuthService {
     return await this.playerRepository.save(playerToCreate);
   }
 
-  async login(user: Player) {
+  async login(user: Player): Promise<{ access_token }> {
     const payload = { username: user.username, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
