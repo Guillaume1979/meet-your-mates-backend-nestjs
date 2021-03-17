@@ -21,6 +21,7 @@ export class DiscordStrategy extends PassportStrategy(Strategy) {
   async validate(accessToken: string, refreshToken: string, profile: Profile) {
     const { username, id: discordId, email, avatar, guilds } = profile;
     const user = { username, discordId, email, avatar };
+    // TODO remove that code
     console.log('retour validate =', await this.authService.validateUser(user));
     return await this.authService.validateUser(user);
   }

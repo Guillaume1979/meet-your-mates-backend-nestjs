@@ -1,0 +1,30 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Guild {
+  id: Float!
+  name: String!
+  players: [Player!]!
+}
+
+type Player {
+  age: Float
+  avatar: String
+  discordId: String
+  email: String!
+  guilds: [Guild!]!
+  id: Int!
+  roles: [Role!]!
+  username: String!
+}
+
+type Query {
+  player(id: Int!): Player!
+}
+
+type Role {
+  id: Float!
+  name: String!
+  players: [Player!]!
+}

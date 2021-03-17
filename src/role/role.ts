@@ -1,14 +1,19 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Player } from '../player/entities/player.entity';
+import { Field, ObjectType } from '@nestjs/graphql';
 
+@ObjectType()
 @Entity()
-export class TechnicalRole {
+export class Role {
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @Column({ nullable: false })
   name: string;
 
-  @ManyToMany(() => Player, (player) => player.technicalRoles)
+  @Field(() => [Player])
+  @ManyToMany(() => Player, (player) => player.roles)
   players: Player[];
 }

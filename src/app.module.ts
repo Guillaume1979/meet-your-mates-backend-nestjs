@@ -9,9 +9,11 @@ import { DataLoadingService } from './data-loading.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Player } from './player/entities/player.entity';
 import { Guild } from './guild/entities/guild.entity';
-import { TechnicalRoleModule } from './technical-role/technical-role.module';
-import { TechnicalRole } from './technical-role/technical.role';
+import { RoleModule } from './role/role.module';
+import { Role } from './role/role';
 import { AuthModule } from './auth/auth.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 
 const environment =
   process.env.ENVIRONMENT === 'prod' ? '.env.prod' : '.env.dev';
@@ -22,11 +24,17 @@ const environment =
       envFilePath: ['.env', environment],
       isGlobal: true,
     }),
-    TypeOrmModule.forFeature([Player, Guild, TechnicalRole]),
+    GraphQLModule.forRoot({
+      debug: false,
+      playground: false,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
+    }),
+    TypeOrmModule.forFeature([Player, Guild, Role]),
     PlayerModule,
     GuildModule,
     DatabaseModule,
-    TechnicalRoleModule,
+    RoleModule,
     AuthModule,
   ],
   controllers: [AppController],
