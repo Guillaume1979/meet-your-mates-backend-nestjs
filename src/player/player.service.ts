@@ -18,12 +18,13 @@ export class PlayerService {
     private readonly playerRepository: Repository<Player>,
   ) {}
 
-  private async findPlayerById(playerId: number): Promise<Player> {
+  private async findPlayerById(playerId: number): Promise<Partial<Player>> {
     const player = await this.playerRepository.findOne(playerId);
     if (!player) {
       throw new NotFoundException('Player not found');
     }
-    return player;
+    const { discordId, ...playerWithoutDiscordId } = player;
+    return playerWithoutDiscordId;
   }
 
   async getPlayers(paginationDto: PaginationDto): Promise<PaginatedResultDto> {
@@ -48,13 +49,7 @@ export class PlayerService {
     };
   }
 
-  async getPlayerById(id: number): Promise<Player> {
-    // const playerToGet = await this.playerRepository.findOne(id);
-    // if (!!playerToGet) {
-    //   return playerToGet;
-    // } else {
-    //   throw new NotFoundException();
-    // }
+  async getPlayerById(id: number): Promise<Partial<Player>> {
     return this.findPlayerById(id);
   }
 
@@ -66,14 +61,19 @@ export class PlayerService {
     return this.playerRepository.save(player);
   }
 
-  async updatePlayer(id: number, player: UpdatePlayerDto): Promise<Player> {
+  async updatePlayer(
+    id: number,
+    player: UpdatePlayerDto,
+  ): Promise<Partial<Player>> {
     if (id !== player.id) {
       throw new BadRequestException('Player id is different from URI id');
     }
     const playerToUpdate = await this.playerRepository.findOne(id);
-    if (!!playerToUpdate) {
+    if (playerToUpdate !== undefined) {
       await this.playerRepository.save(player);
-      return this.playerRepository.findOne(id);
+      const playerUpdated = await this.playerRepository.findOne(id);
+      const { discordId, ...playerUpdatedWithoutDiscordId } = playerUpdated;
+      return playerUpdatedWithoutDiscordId;
     } else {
       throw new NotFoundException('player to update not found');
     }

@@ -13,7 +13,6 @@ import { RoleModule } from './role/role.module';
 import { Role } from './role/role';
 import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
-import { join } from 'path';
 
 const environment =
   process.env.ENVIRONMENT === 'prod' ? '.env.prod' : '.env.dev';
@@ -25,9 +24,9 @@ const environment =
       isGlobal: true,
     }),
     GraphQLModule.forRoot({
-      debug: false,
-      playground: false,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      debug: true,
+      playground: true,
+      autoSchemaFile: 'schema.gql',
       sortSchema: true,
     }),
     TypeOrmModule.forFeature([Player, Guild, Role]),

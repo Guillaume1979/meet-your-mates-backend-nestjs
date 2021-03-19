@@ -26,7 +26,9 @@ export class PlayerController {
   }
 
   @Get(':id')
-  getPlayerById(@Param('id', ParseIntPipe) id: number): Promise<Player> {
+  getPlayerById(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Partial<Player>> {
     return this.playerService.getPlayerById(id);
   }
 

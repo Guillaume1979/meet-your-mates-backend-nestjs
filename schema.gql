@@ -1,0 +1,47 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Guild {
+  id: Float!
+  name: String!
+  players: [Player!]!
+}
+
+type Mutation {
+  updatePlayer(id: Int!, player: UpdatePlayerDto!): Player!
+}
+
+"""Information about the players"""
+type Player {
+  age: Int
+  avatar: String
+
+  """unique identifier of Discord account"""
+  discordId: String
+  email: String!
+  guilds: [Guild!]
+  id: Int!
+  roles: [Role!]!
+  username: String!
+}
+
+type Query {
+  """Get the information about the player corresponding to the id"""
+  player(id: Int!): Player!
+}
+
+type Role {
+  id: Float!
+  name: String!
+  players: [Player!]!
+}
+
+input UpdatePlayerDto {
+  age: Float
+  avatar: String
+  discordId: String
+  email: String
+  id: Float!
+  username: String
+}
