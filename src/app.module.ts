@@ -9,8 +9,6 @@ import { DataLoadingService } from './data-loading.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Player } from './player/entities/player.entity';
 import { Guild } from './guild/entities/guild.entity';
-import { RoleModule } from './role/role.module';
-import { Role } from './role/role';
 import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
@@ -30,11 +28,10 @@ const environment =
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),
-    TypeOrmModule.forFeature([Player, Guild, Role]),
+    TypeOrmModule.forFeature([Player, Guild]),
     PlayerModule,
     GuildModule,
     DatabaseModule,
-    RoleModule,
     AuthModule,
   ],
   controllers: [AppController],

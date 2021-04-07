@@ -7,8 +7,8 @@ import {
 } from 'typeorm';
 import { TimestampEntities } from '../../generic/timestamp-entities';
 import { Guild } from '../../guild/entities/guild.entity';
-import { Role } from '../../role/role';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { PlayerRoleEnum } from '../../enums/player-role.enum';
 
 @ObjectType({ description: 'Information about the players' })
 @Entity()
@@ -41,13 +41,14 @@ export class Player extends TimestampEntities {
   @Column({ nullable: true })
   age: number;
 
-  @Field((type) => [Role])
-  @ManyToMany(() => Role, (role) => role.players, {
-    eager: true,
+  @Field({ nullable: false })
+  @Column({
+    type: 'enum',
+    enum: PlayerRoleEnum,
+    default: PlayerRoleEnum.USER,
     nullable: false,
   })
-  @JoinTable()
-  roles: Role[];
+  role: string;
 
   @Field((type) => [Guild], { nullable: true })
   @ManyToMany(() => Guild, (guild) => guild.players, {

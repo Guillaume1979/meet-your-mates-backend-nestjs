@@ -3,7 +3,6 @@ import { Player } from './player/entities/player.entity';
 import { Guild } from './guild/entities/guild.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Role } from './role/role';
 
 @Injectable()
 export class DataLoadingService {
@@ -12,14 +11,11 @@ export class DataLoadingService {
     private readonly playerRepository: Repository<Player>,
     @InjectRepository(Guild)
     private readonly guildRepository: Repository<Guild>,
-    @InjectRepository(Role)
-    private readonly roleRepository: Repository<Role>,
   ) {
     this.initDB();
   }
 
   private async initDB() {
-    await this.loadRoles();
     await this.loadGuilds();
     await this.loadPlayers();
   }
@@ -31,32 +27,32 @@ export class DataLoadingService {
         email: 'guitou@mym.fr',
         discordId: '294251344401793024',
         age: 41,
-        roles: [{ id: 1 }, { id: 2 }],
+        role: 'admin',
         guilds: [],
       } as Player,
       {
         username: 'Germain',
         email: 'germain@mym.fr',
         age: 37,
-        roles: [{ id: 2 }],
+        role: 'user',
       } as Player,
       {
         username: 'Pinou',
         email: 'pinou@mym.fr',
         age: 9,
-        roles: [{ id: 2 }],
+        role: 'user',
       } as Player,
       {
         username: 'Capucine',
         email: 'capucine@mym.fr',
         age: 11,
-        roles: [{ id: 2 }],
+        role: 'user',
       } as Player,
       {
         username: 'Raphy',
         email: 'raphy@mym.fr',
         age: 11,
-        roles: [{ id: 2 }],
+        role: 'user',
       } as Player,
     ];
 
@@ -75,13 +71,5 @@ export class DataLoadingService {
       { name: "L'autre guilde" } as Guild,
     ];
     await this.guildRepository.save(_guilds);
-  }
-
-  private async loadRoles(): Promise<void> {
-    const roles: Role[] = [
-      { name: 'admin' } as Role,
-      { name: 'user' } as Role,
-    ];
-    await this.roleRepository.save(roles);
   }
 }

@@ -4,8 +4,7 @@ import { Player } from '../player/entities/player.entity';
 import { Repository } from 'typeorm';
 import { UserDetails } from './utils/auth-interfaces';
 import { JwtService } from '@nestjs/jwt';
-import { CreatePlayerDto } from '../player/dto/create-player.dto';
-import { Role } from '../role/role';
+import { PlayerRoleEnum } from '../enums/player-role.enum';
 
 @Injectable()
 export class AuthService {
@@ -17,9 +16,16 @@ export class AuthService {
 
   async validateUser(user: UserDetails): Promise<Player> {
     const { discordId } = user;
-    const player: Player = await this.playerRepository.findOne({ discordId });
-    if (player) return player;
-    return this.createUser(user);
+    let player: Player;
+    const playerToCheck: Player = await this.playerRepository.findOne({
+      discordId,
+    });
+    if (playerToCheck) {
+      player = playerToCheck;
+    } else {
+      player = await this.createUser(user);
+    }
+    return player;
   }
 
   async createUser(user: UserDetails): Promise<Player> {
@@ -29,10 +35,10 @@ export class AuthService {
       email,
       discordId,
       avatar,
-      roles: [{ id: 2 }],
+      role: PlayerRoleEnum.USER,
     } as Player;
 
-    //TODO A tester cette façon de faire
+    //TODO A tester cette façon de faire. Voir comment gérer la création du rôle de cette façon
     // const toto: CreatePlayerDto = await this.playerRepository.create(user);
     return await this.playerRepository.save(playerToCreate);
   }
@@ -41,7 +47,7 @@ export class AuthService {
     const payload = {
       username: user.username,
       userId: user.id,
-      role: user.roles,
+      role: user.role,
     };
     return {
       access_token: this.jwtService.sign(payload),

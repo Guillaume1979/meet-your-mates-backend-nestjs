@@ -22,19 +22,13 @@ type Player {
   email: String!
   guilds: [Guild!]
   id: Int!
-  roles: [Role!]!
+  role: String!
   username: String!
 }
 
 type Query {
   """Get the information about the player corresponding to the id"""
   player(id: Int!): Player!
-}
-
-type Role {
-  id: Float!
-  name: String!
-  players: [Player!]
 }
 
 input UpdatePlayerDto {
