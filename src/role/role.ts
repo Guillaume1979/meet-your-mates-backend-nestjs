@@ -13,7 +13,7 @@ export class Role {
   @Column({ nullable: false })
   name: string;
 
-  @Field(() => [Player])
+  @Field(() => [Player], { nullable: true })
   @ManyToMany(() => Player, (player) => player.roles)
   players: Player[];
 }

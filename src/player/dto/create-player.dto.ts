@@ -1,5 +1,6 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Field, InputType } from '@nestjs/graphql';
+import { Role } from '../../role/role';
 
 @InputType()
 export class CreatePlayerDto {
@@ -23,4 +24,8 @@ export class CreatePlayerDto {
   @IsString()
   @IsOptional()
   avatar: string;
+
+  // @Field()
+  // @IsNotEmpty()
+  // roles: Role[];
 }

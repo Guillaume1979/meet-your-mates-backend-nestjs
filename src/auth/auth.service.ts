@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { UserDetails } from './utils/auth-interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { CreatePlayerDto } from '../player/dto/create-player.dto';
+import { Role } from '../role/role';
 
 @Injectable()
 export class AuthService {
@@ -23,12 +24,14 @@ export class AuthService {
 
   async createUser(user: UserDetails): Promise<Player> {
     const { username, email, discordId, avatar } = user;
-    const playerToCreate: CreatePlayerDto = {
+    const playerToCreate: Partial<Player> = {
       username,
       email,
       discordId,
       avatar,
-    };
+      roles: [{ id: 2 }],
+    } as Player;
+
     //TODO A tester cette façon de faire
     // const toto: CreatePlayerDto = await this.playerRepository.create(user);
     return await this.playerRepository.save(playerToCreate);

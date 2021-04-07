@@ -10,7 +10,12 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get('APP_PORT');
   app.use(morgan('dev'));
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy:
+        process.env.ENVIRONMENT === 'dev' ? false : undefined,
+    }),
+  );
   app.enableCors({
     origin: ['http://localhost:4200'],
   });
