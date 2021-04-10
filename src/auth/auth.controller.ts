@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Req, Request, Res, UseGuards } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Req,
+  Request,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { DiscordAuthGuard } from './guards/discord.guard';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { Public } from "./utils/public-decorator";
+import { Public } from './utils/public-decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -37,7 +45,6 @@ export class AuthController {
   @Get('status')
   @UseGuards(JwtAuthGuard)
   status(@Request() req) {
-    // this.authService.
     return req.player;
   }
 

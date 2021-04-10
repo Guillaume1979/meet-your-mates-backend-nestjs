@@ -12,7 +12,7 @@ export class DataLoadingService {
     @InjectRepository(Guild)
     private readonly guildRepository: Repository<Guild>,
   ) {
-    this.initDB();
+    this.initDB().then((value) => console.log('Database loaded'));
   }
 
   private async initDB() {
@@ -33,24 +33,28 @@ export class DataLoadingService {
       {
         username: 'Germain',
         email: 'germain@mym.fr',
+        discordId: '12',
         age: 37,
         role: 'user',
       } as Player,
       {
         username: 'Pinou',
         email: 'pinou@mym.fr',
+        discordId: '13',
         age: 9,
         role: 'user',
       } as Player,
       {
         username: 'Capucine',
         email: 'capucine@mym.fr',
+        discordId: '14',
         age: 11,
         role: 'user',
       } as Player,
       {
         username: 'Raphy',
         email: 'raphy@mym.fr',
+        discordId: '15',
         age: 11,
         role: 'user',
       } as Player,

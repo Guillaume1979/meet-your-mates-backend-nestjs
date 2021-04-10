@@ -23,8 +23,4 @@ export class CreatePlayerDto {
   @IsString()
   @IsOptional()
   avatar: string;
-
-  // @Field()
-  // @IsNotEmpty()
-  // roles: Role[];
 }

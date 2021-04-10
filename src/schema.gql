@@ -18,7 +18,7 @@ type Player {
   avatar: String
 
   """unique identifier of Discord account"""
-  discordId: String
+  discordId: String!
   email: String!
   guilds: [Guild!]
   id: Int!

@@ -25,12 +25,11 @@ export class Player extends TimestampEntities {
   @Column({ nullable: false })
   email: string;
 
-  // TODO : revoir le nullable
   @Field({
-    nullable: true,
+    nullable: false,
     description: 'unique identifier of Discord account',
   })
-  @Column({ unique: true, nullable: true })
+  @Column({ unique: true, nullable: false })
   discordId: string;
 
   @Field({ nullable: true })

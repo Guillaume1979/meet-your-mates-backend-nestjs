@@ -37,12 +37,6 @@ export class PlayerController {
     return this.playerService.getPlayersWithDeleted();
   }
 
-  @Post()
-  createPlayer(@Body() newPlayer: CreatePlayerDto): Promise<Player> {
-    Logger.log(newPlayer);
-    return this.playerService.createPlayer(newPlayer);
-  }
-
   @Put(':id')
   updatePLayer(
     @Param('id', ParseIntPipe) id: number,

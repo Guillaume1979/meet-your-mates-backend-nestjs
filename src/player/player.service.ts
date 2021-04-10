@@ -57,10 +57,6 @@ export class PlayerService {
     return this.playerRepository.find({ withDeleted: true });
   }
 
-  createPlayer(player: CreatePlayerDto): Promise<Player> {
-    return this.playerRepository.save(player);
-  }
-
   async updatePlayer(
     id: number,
     player: UpdatePlayerDto,
@@ -87,10 +83,4 @@ export class PlayerService {
       throw new NotFoundException('Player to delete not found');
     }
   }
-
-  // async register(userData: UserRegistrationDto): Promise<Player> {
-  //   const user = this.playerRepository.create({
-  //     ...userData
-  //   });
-  // }
 }
