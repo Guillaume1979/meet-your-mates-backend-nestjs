@@ -6,7 +6,6 @@ import {
 import { Player } from './entities/player.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { PaginationDto } from '../generic/pagination.dto';
 import { PaginatedResultDto } from '../generic/paginated-result.dto';
@@ -34,7 +33,7 @@ export class PlayerService {
     const players = await this.playerRepository
       .createQueryBuilder('player')
       // add relation with technical role to obtain the role of the player
-      .leftJoinAndSelect('player.technicalRoles', 'technicalRoles')
+      // .leftJoinAndSelect('player.technicalRoles', 'technicalRoles')
       // add relation to get the player's guilds
       .leftJoinAndSelect('player.guilds', 'guilds')
       .skip(skippedItems)

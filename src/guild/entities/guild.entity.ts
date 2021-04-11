@@ -1,12 +1,12 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { TimestampEntities } from '../../generic/timestamp-entities';
 import { Player } from '../../player/entities/player.entity';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 @Entity()
 export class Guild extends TimestampEntities {
-  @Field()
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 

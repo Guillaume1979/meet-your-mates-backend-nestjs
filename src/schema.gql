@@ -3,13 +3,26 @@
 # ------------------------------------------------------
 
 type Guild {
-  id: Float!
+  id: Int!
   name: String!
   players: [Player!]!
 }
 
 type Mutation {
   updatePlayer(id: Int!, player: UpdatePlayerDto!): Player!
+}
+
+type PaginatedResultDto {
+  data: [Player!]!
+  limit: Int!
+  page: Int!
+  totalItems: Int!
+  totalPages: Int!
+}
+
+input PaginationDto {
+  limit: Int!
+  page: Int!
 }
 
 """Information about the players"""
@@ -29,6 +42,9 @@ type Player {
 type Query {
   """Get the information about the player corresponding to the id"""
   player(id: Int!): Player!
+
+  """Get a paginated list of players"""
+  playerList(paginationInput: PaginationDto!): PaginatedResultDto!
 }
 
 input UpdatePlayerDto {

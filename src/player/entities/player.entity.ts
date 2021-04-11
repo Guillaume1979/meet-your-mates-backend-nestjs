@@ -13,7 +13,7 @@ import { PlayerRoleEnum } from '../../enums/player-role.enum';
 @ObjectType({ description: 'Information about the players' })
 @Entity()
 export class Player extends TimestampEntities {
-  @Field((type) => Int)
+  @Field(() => Int)
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -36,7 +36,7 @@ export class Player extends TimestampEntities {
   @Column({ nullable: true })
   avatar: string;
 
-  @Field((type) => Int, { nullable: true })
+  @Field(() => Int, { nullable: true })
   @Column({ nullable: true })
   age: number;
 
@@ -49,7 +49,7 @@ export class Player extends TimestampEntities {
   })
   role: string;
 
-  @Field((type) => [Guild], { nullable: true })
+  @Field(() => [Guild], { nullable: true })
   @ManyToMany(() => Guild, (guild) => guild.players, {
     eager: true,
     nullable: true,
