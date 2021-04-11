@@ -19,7 +19,7 @@ dotenv.config();
           database: configService.get('DB_DATABASE'),
           entities: [],
           autoLoadEntities: true,
-          synchronize: true,
+          synchronize: configService.get('DB_SYNCHRONIZE'),
           dropSchema: configService.get('DB_DROPSCHEMA'),
         } as TypeOrmModuleAsyncOptions),
       inject: [ConfigService],
