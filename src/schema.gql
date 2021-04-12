@@ -9,6 +9,7 @@ type Guild {
 }
 
 type Mutation {
+  deletePlayer(id: Int!): Player!
   updatePlayer(id: Int!, player: UpdatePlayerDto!): Player!
 }
 

@@ -74,10 +74,11 @@ export class PlayerService {
     }
   }
 
-  async deletePlayer(id: number) {
+  async deletePlayer(id: number): Promise<Player> {
     const playerToDelete = await this.playerRepository.findOne(id);
-    if (!!playerToDelete) {
+    if (playerToDelete !== undefined) {
       await this.playerRepository.softDelete(id);
+      return playerToDelete;
     } else {
       throw new NotFoundException('Player to delete not found');
     }

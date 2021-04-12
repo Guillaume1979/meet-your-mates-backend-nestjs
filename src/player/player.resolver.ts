@@ -52,4 +52,9 @@ export class PlayerResolver {
   ): Promise<Partial<Player>> {
     return this.playerService.updatePlayer(id, playerToUpdate);
   }
+
+  @Mutation(() => Player)
+  deletePlayer(@Args('id', { type: () => Int }) id: number): Promise<Player> {
+    return this.playerService.deletePlayer(id);
+  }
 }
