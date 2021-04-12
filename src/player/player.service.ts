@@ -78,7 +78,11 @@ export class PlayerService {
     const playerToDelete = await this.playerRepository.findOne(id);
     if (playerToDelete !== undefined) {
       await this.playerRepository.softDelete(id);
-      return playerToDelete;
+      console.log(
+        'joueur effacé : ',
+        await this.playerRepository.findOne(id, { withDeleted: true }),
+      );
+      return await this.playerRepository.findOne(id, { withDeleted: true });
     } else {
       throw new NotFoundException('Player to delete not found');
     }
