@@ -21,18 +21,6 @@ export class PlayerResolver {
     return this.playerService.getPlayerById(id);
   }
 
-  // @Public()
-  // @Query(() => PaginatedResultDto, {
-  //   name: 'playerList',
-  //   description: 'Get a paginated list of players',
-  // })
-  // async getPlayers(
-  //   @Args('limit', { type: () => Int }) limit: number,
-  //   @Args('page', { type: () => Int }) page: number,
-  // ): Promise<PaginatedResultDto> {
-  //   return this.playerService.getPlayers(new PaginationDto(limit, page));
-  // }
-
   @Public()
   @Query(() => PaginatedResultDto, {
     name: 'playerList',

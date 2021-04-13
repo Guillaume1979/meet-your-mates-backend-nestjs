@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateGuildDto } from './create-guild.dto';
+import { Field, InputType } from '@nestjs/graphql';
 
-export class UpdateGuildDto extends PartialType(CreateGuildDto) {}
+@InputType()
+export class UpdateGuildDto {
+  @Field()
+  id: number;
+}

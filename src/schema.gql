@@ -11,8 +11,8 @@ type Guild {
   createdAt: DateTime!
   deletedAt: DateTime!
   id: Int!
+  members: [Player!]
   name: String!
-  players: [Player!]!
   updateAt: DateTime!
 }
 
@@ -52,6 +52,9 @@ type Player {
 }
 
 type Query {
+  getGuildById(id: Int!): Guild!
+  getGuilds: [Guild!]!
+
   """Get the information about the player corresponding to the id"""
   player(id: Int!): Player!
 

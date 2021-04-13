@@ -12,23 +12,18 @@ export class GuildService {
     private readonly guildRepository: Repository<Guild>,
   ) {}
 
-  create(createGuildDto: CreateGuildDto) {
-    return 'This action adds a new guild';
+  async findAll(): Promise<Guild[]> {
+    return await this.guildRepository.find({ relations: ['members'] });
   }
 
-  findAll() {
-    return `This action returns all guild`;
-  }
+  // async findAll(): Promise<Guild[]> {
+  //   return await this.guildRepository
+  //     .createQueryBuilder('guild')
+  //     .leftJoinAndSelect('guild.members', 'members')
+  //     .getMany();
+  // }
 
-  findOne(id: number) {
-    return `This action returns a #${id} guild`;
-  }
-
-  update(id: number, updateGuildDto: UpdateGuildDto) {
-    return `This action updates a #${id} guild`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} guild`;
+  async findOne(id: number) {
+    return await this.guildRepository.findOne(id, { relations: ['members'] });
   }
 }

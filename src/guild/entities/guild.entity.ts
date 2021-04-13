@@ -11,10 +11,10 @@ export class Guild extends TimestampEntities {
   id: number;
 
   @Field()
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   name: string;
 
-  @Field(() => [Player])
+  @Field(() => [Player], { nullable: true })
   @ManyToMany(() => Player, (player) => player.guilds)
-  players: Player[];
+  members: Player[];
 }

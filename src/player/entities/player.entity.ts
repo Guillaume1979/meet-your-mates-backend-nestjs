@@ -50,7 +50,7 @@ export class Player extends TimestampEntities {
   role: string;
 
   @Field(() => [Guild], { nullable: true })
-  @ManyToMany(() => Guild, (guild) => guild.players, {
+  @ManyToMany(() => Guild, (guild) => guild.members, {
     eager: true,
     nullable: true,
   })
