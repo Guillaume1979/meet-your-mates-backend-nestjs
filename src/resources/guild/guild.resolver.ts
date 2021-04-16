@@ -1,7 +1,7 @@
 import { Args, Int, Query, Resolver } from '@nestjs/graphql';
 import { Guild } from './entities/guild.entity';
 import { GuildService } from './guild.service';
-import { CurrentUser } from '../generic/custom-decorator';
+import { CurrentUser } from '../../generic/custom-decorator';
 import { Player } from '../player/entities/player.entity';
 
 @Resolver(() => Guild)

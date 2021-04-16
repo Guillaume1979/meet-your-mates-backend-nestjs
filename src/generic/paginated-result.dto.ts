@@ -1,4 +1,4 @@
-import { Player } from '../player/entities/player.entity';
+import { Player } from '../resources/player/entities/player.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()

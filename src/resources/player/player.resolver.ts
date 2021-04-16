@@ -1,10 +1,10 @@
 import { PlayerService } from './player.service';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Player } from './entities/player.entity';
-import { Public } from '../auth/utils/public-decorator';
+import { Public } from '../../auth/utils/public-decorator';
 import { UpdatePlayerDto } from './dto/update-player.dto';
-import { PaginatedResultDto } from '../generic/paginated-result.dto';
-import { PaginationDto } from '../generic/pagination.dto';
+import { PaginatedResultDto } from '../../generic/paginated-result.dto';
+import { PaginationDto } from '../../generic/pagination.dto';
 
 @Resolver((of) => Player)
 export class PlayerResolver {

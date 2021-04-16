@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { TimestampEntities } from '../../generic/timestamp-entities';
+import { TimestampEntities } from '../../../generic/timestamp-entities';
 import { Player } from '../../player/entities/player.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 

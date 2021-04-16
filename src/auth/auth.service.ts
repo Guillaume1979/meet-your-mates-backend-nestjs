@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Player } from '../player/entities/player.entity';
+import { Player } from '../resources/player/entities/player.entity';
 import { Repository } from 'typeorm';
 import { UserDetails } from './utils/auth-interfaces';
 import { JwtService } from '@nestjs/jwt';

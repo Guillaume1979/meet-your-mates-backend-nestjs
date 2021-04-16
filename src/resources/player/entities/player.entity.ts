@@ -5,10 +5,10 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { TimestampEntities } from '../../generic/timestamp-entities';
+import { TimestampEntities } from '../../../generic/timestamp-entities';
 import { Guild } from '../../guild/entities/guild.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { PlayerRoleEnum } from '../../enums/player-role.enum';
+import { PlayerRoleEnum } from '../../../enums/player-role.enum';
 
 @ObjectType({ description: 'Information about the players' })
 @Entity()

@@ -7,8 +7,8 @@ import { Player } from './entities/player.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdatePlayerDto } from './dto/update-player.dto';
-import { PaginationDto } from '../generic/pagination.dto';
-import { PaginatedResultDto } from '../generic/paginated-result.dto';
+import { PaginationDto } from '../../generic/pagination.dto';
+import { PaginatedResultDto } from '../../generic/paginated-result.dto';
 
 @Injectable()
 export class PlayerService {
