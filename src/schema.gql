@@ -2,10 +2,24 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input CreateGameInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input CreateSessionInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type Game {
+  id: Int!
+}
 
 type Guild {
   createdAt: DateTime!
@@ -17,8 +31,14 @@ type Guild {
 }
 
 type Mutation {
+  createGame(createGameInput: CreateGameInput!): Game!
+  createSession(createSessionInput: CreateSessionInput!): Session!
   deletePlayer(id: Int!): Player!
+  removeGame(id: Int!): Game!
+  removeSession(id: Int!): Session!
+  updateGame(updateGameInput: UpdateGameInput!): Game!
   updatePlayer(id: Int!, player: UpdatePlayerDto!): Player!
+  updateSession(updateSessionInput: UpdateSessionInput!): Session!
 }
 
 type PaginatedResultDto {
@@ -52,6 +72,7 @@ type Player {
 }
 
 type Query {
+  game(id: Int!): Game!
   getGuildById(id: Int!): Guild!
   getGuilds: [Guild!]!
   getGuildsPlayer: [Guild!]!
@@ -61,6 +82,17 @@ type Query {
 
   """Get a paginated list of players"""
   playerList(paginationInput: PaginationDto!): PaginatedResultDto!
+  session(id: Int!): Session!
+}
+
+type Session {
+  id: Int!
+}
+
+input UpdateGameInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
 
 input UpdatePlayerDto {
@@ -70,4 +102,10 @@ input UpdatePlayerDto {
   email: String
   id: Float!
   username: String
+}
+
+input UpdateSessionInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
