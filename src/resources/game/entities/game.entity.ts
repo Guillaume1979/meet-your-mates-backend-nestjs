@@ -10,13 +10,16 @@ export class Game {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field({ nullable: true })
   @Column()
   name: string;
 
   // category = "main game", "dlc", "remaster"...
+  @Field({ nullable: true })
   @Column()
   category: string;
 
+  @Field(() => Cover, { nullable: true })
   @OneToOne(() => Cover)
   @JoinColumn()
   cover: Cover;

@@ -18,12 +18,15 @@ export class Session extends TimestampEntities {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field(() => Game, { nullable: true })
   @ManyToOne(() => Game)
-  game?: Game;
+  game: Game;
 
+  @Field({ nullable: true })
   @Column()
   date: string;
 
+  @Field(() => [Player], { nullable: true })
   @ManyToMany(() => Player, (player) => player.sessions)
   registeredPlayers: Player[];
 }

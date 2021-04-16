@@ -8,6 +8,7 @@ export class Cover {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field({ nullable: true })
   @Column()
   url: string;
 }

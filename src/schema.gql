@@ -2,6 +2,11 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Cover {
+  id: Int!
+  url: String
+}
+
 input CreateGameInput {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -18,7 +23,10 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Game {
+  category: String
+  cover: Cover
   id: Int!
+  name: String
 }
 
 type Guild {
@@ -67,6 +75,7 @@ type Player {
   guilds: [Guild!]
   id: Int!
   role: String!
+  sessions: [Session!]
   updateAt: DateTime!
   username: String!
 }
@@ -87,8 +96,11 @@ type Query {
 
 type Session {
   createdAt: DateTime!
+  date: String
   deletedAt: DateTime!
+  game: Game
   id: Int!
+  registeredPlayers: [Player!]
   updateAt: DateTime!
 }
 

@@ -58,6 +58,7 @@ export class Player extends TimestampEntities {
   @JoinTable()
   guilds: Guild[];
 
+  @Field(() => [Session], { nullable: true })
   @ManyToMany(() => Session, (session) => session.registeredPlayers, {
     nullable: true,
     eager: true,
