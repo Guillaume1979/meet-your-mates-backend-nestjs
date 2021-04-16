@@ -86,7 +86,10 @@ type Query {
 }
 
 type Session {
+  createdAt: DateTime!
+  deletedAt: DateTime!
   id: Int!
+  updateAt: DateTime!
 }
 
 input UpdateGameInput {

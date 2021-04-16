@@ -9,6 +9,7 @@ import { TimestampEntities } from '../../../generic/timestamp-entities';
 import { Guild } from '../../guild/entities/guild.entity';
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { PlayerRoleEnum } from '../../../enums/player-role.enum';
+import { Session } from '../../session/entities/session.entity';
 
 @ObjectType({ description: 'Information about the players' })
 @Entity()
@@ -56,4 +57,14 @@ export class Player extends TimestampEntities {
   })
   @JoinTable()
   guilds: Guild[];
+
+  @ManyToMany(() => Session, (session) => session.registeredPlayers, {
+    nullable: true,
+    eager: true,
+  })
+  @JoinTable({
+    joinColumn: { name: 'registered_player' },
+    inverseJoinColumn: { name: 'session' },
+  })
+  sessions: Session[];
 }
