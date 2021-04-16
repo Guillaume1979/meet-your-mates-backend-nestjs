@@ -54,6 +54,7 @@ type Player {
 type Query {
   getGuildById(id: Int!): Guild!
   getGuilds: [Guild!]!
+  getGuildsPlayer: [Guild!]!
 
   """Get the information about the player corresponding to the id"""
   player(id: Int!): Player!

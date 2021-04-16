@@ -12,8 +12,17 @@ export class GuildService {
     private readonly guildRepository: Repository<Guild>,
   ) {}
 
-  async findAll(): Promise<Guild[]> {
-    return await this.guildRepository.find({ relations: ['members'] });
+  async findAll(playerId?: number): Promise<Guild[]> {
+    let guilds: Guild[] = [];
+    if (playerId === undefined) {
+      guilds = await this.guildRepository.find({ relations: ['members'] });
+    } else {
+      guilds = await this.guildRepository.find({
+        relations: ['members'],
+        where: { id: playerId },
+      });
+    }
+    return guilds;
   }
 
   // async findAll(): Promise<Guild[]> {
