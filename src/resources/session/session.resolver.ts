@@ -9,12 +9,14 @@ export class SessionResolver {
   constructor(private readonly sessionService: SessionService) {}
 
   @Mutation(() => Session)
-  createSession(@Args('createSessionInput') createSessionInput: CreateSessionInput) {
+  createSession(
+    @Args('createSessionInput') createSessionInput: CreateSessionInput,
+  ) {
     return this.sessionService.create(createSessionInput);
   }
 
-  @Query(() => [Session], { name: 'session' })
-  findAll() {
+  @Query(() => [Session], { name: 'sessionList' })
+  findAll(): Promise<Session[]> {
     return this.sessionService.findAll();
   }
 
@@ -24,8 +26,13 @@ export class SessionResolver {
   }
 
   @Mutation(() => Session)
-  updateSession(@Args('updateSessionInput') updateSessionInput: UpdateSessionInput) {
-    return this.sessionService.update(updateSessionInput.id, updateSessionInput);
+  updateSession(
+    @Args('updateSessionInput') updateSessionInput: UpdateSessionInput,
+  ) {
+    return this.sessionService.update(
+      updateSessionInput.id,
+      updateSessionInput,
+    );
   }
 
   @Mutation(() => Session)

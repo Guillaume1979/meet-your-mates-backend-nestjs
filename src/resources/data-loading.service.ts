@@ -3,6 +3,8 @@ import { Player } from './player/entities/player.entity';
 import { Guild } from './guild/entities/guild.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Session } from './session/entities/session.entity';
+import { Game } from './game/entities/game.entity';
 
 @Injectable()
 export class DataLoadingService {
@@ -11,12 +13,15 @@ export class DataLoadingService {
     private readonly playerRepository: Repository<Player>,
     @InjectRepository(Guild)
     private readonly guildRepository: Repository<Guild>,
+    @InjectRepository(Session)
+    private readonly sessionRepository: Repository<Session>,
   ) {
     this.initDB().then((value) => console.log('Database loaded'));
   }
 
   private async initDB() {
     await this.loadGuilds();
+    await this.loadSessions();
     await this.loadPlayers();
   }
 
@@ -29,6 +34,7 @@ export class DataLoadingService {
         age: 41,
         role: 'admin',
         guilds: [],
+        sessions: [{ id: 1 }, { id: 3 }],
       } as Player,
       {
         username: 'Germain',
@@ -36,6 +42,7 @@ export class DataLoadingService {
         discordId: '12',
         age: 37,
         role: 'user',
+        sessions: [{ id: 1 }],
       } as Player,
       {
         username: 'Pinou',
@@ -43,6 +50,7 @@ export class DataLoadingService {
         discordId: '13',
         age: 9,
         role: 'user',
+        sessions: [{ id: 2 }, { id: 3 }],
       } as Player,
       {
         username: 'Capucine',
@@ -50,6 +58,7 @@ export class DataLoadingService {
         discordId: '14',
         age: 11,
         role: 'user',
+        sessions: [{ id: 2 }, { id: 3 }],
       } as Player,
       {
         username: 'Raphy',
@@ -57,6 +66,7 @@ export class DataLoadingService {
         discordId: '15',
         age: 11,
         role: 'user',
+        sessions: [{ id: 2 }, { id: 3 }],
       } as Player,
     ];
 
@@ -75,5 +85,23 @@ export class DataLoadingService {
       { name: "L'autre guilde" } as Guild,
     ];
     await this.guildRepository.save(_guilds);
+  }
+
+  private async loadSessions(): Promise<void> {
+    const sessions: Session[] = [
+      {
+        game: { name: 'dota2', category: 'Game' },
+        date: '2021-04-18T22:00:00.000Z',
+      } as Session,
+      {
+        game: { name: 'Mario', category: 'Game' },
+        date: '2021-03-12T22:00:00.000Z',
+      } as Session,
+      {
+        game: { name: 'Animal Crossing', category: 'Game' },
+        date: '2020-07-23T22:00:00.000Z',
+      } as Session,
+    ];
+    await this.sessionRepository.save(sessions);
   }
 }

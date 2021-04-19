@@ -18,8 +18,8 @@ export class Session extends TimestampEntities {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => Game, { nullable: true })
-  @ManyToOne(() => Game)
+  @Field(() => Game, { nullable: false })
+  @ManyToOne(() => Game, { cascade: true })
   game: Game;
 
   @Field({ nullable: true })

@@ -82,6 +82,7 @@ type Player {
 
 type Query {
   game(id: Int!): Game!
+  gameList: [Game!]!
   getGuildById(id: Int!): Guild!
   getGuilds: [Guild!]!
   getGuildsPlayer: [Guild!]!
@@ -92,13 +93,14 @@ type Query {
   """Get a paginated list of players"""
   playerList(paginationInput: PaginationDto!): PaginatedResultDto!
   session(id: Int!): Session!
+  sessionList: [Session!]!
 }
 
 type Session {
   createdAt: DateTime!
   date: String
   deletedAt: DateTime!
-  game: Game
+  game: Game!
   id: Int!
   registeredPlayers: [Player!]
   updateAt: DateTime!

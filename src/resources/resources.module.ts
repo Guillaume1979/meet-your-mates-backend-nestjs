@@ -7,10 +7,11 @@ import { GuildModule } from './guild/guild.module';
 import { DataLoadingService } from './data-loading.service';
 import { SessionModule } from './session/session.module';
 import { GameModule } from './game/game.module';
+import { Session } from './session/entities/session.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Player, Guild]),
+    TypeOrmModule.forFeature([Player, Guild, Session]),
     PlayerModule,
     GuildModule,
     SessionModule,

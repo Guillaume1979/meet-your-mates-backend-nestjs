@@ -1,15 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSessionInput } from './dto/create-session.input';
 import { UpdateSessionInput } from './dto/update-session.input';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Session } from './entities/session.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class SessionService {
+  constructor(
+    @InjectRepository(Session)
+    private readonly sessionRepository: Repository<Session>,
+  ) {}
   create(createSessionInput: CreateSessionInput) {
     return 'This action adds a new session';
   }
 
-  findAll() {
-    return `This action returns all session`;
+  async findAll(): Promise<Session[]> {
+    return await this.sessionRepository.find({
+      relations: ['registeredPlayers', 'game'],
+      order: { date: 'ASC' },
+    });
   }
 
   findOne(id: number) {
