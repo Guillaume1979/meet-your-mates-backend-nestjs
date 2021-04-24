@@ -61,11 +61,10 @@ export class Player extends TimestampEntities {
   @Field(() => [Session], { nullable: true })
   @ManyToMany(() => Session, (session) => session.registeredPlayers, {
     nullable: true,
-    eager: true,
   })
-  @JoinTable({
+  @JoinTable(/*{
     joinColumn: { name: 'registered_player' },
     inverseJoinColumn: { name: 'session' },
-  })
+  }*/)
   sessions: Session[];
 }

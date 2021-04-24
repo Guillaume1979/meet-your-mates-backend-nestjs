@@ -18,8 +18,8 @@ export class Session extends TimestampEntities {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field(() => Game, { nullable: false })
-  @ManyToOne(() => Game, { cascade: true })
+  @Field(() => Game, { nullable: true })
+  @ManyToOne(() => Game, { cascade: true, eager: true }) //todo revoir la cascade quand le chargement des jeux viendra de IGDB
   game: Game;
 
   @Field({ nullable: true })

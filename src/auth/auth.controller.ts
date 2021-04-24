@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Req,
-  Request,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Req, Request, UseGuards } from '@nestjs/common';
 import { DiscordAuthGuard } from './guards/discord.guard';
 import { Response } from 'express';
 import { AuthService } from './auth.service';

@@ -18,6 +18,7 @@ async function bootstrap() {
   );
   app.enableCors({
     origin: ['http://localhost:4200'],
+    // allowedHeaders: ['Access-Control-Allow-Origin', 'Content-type'],
   });
   app.useGlobalPipes(
     new ValidationPipe({

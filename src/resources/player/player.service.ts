@@ -18,7 +18,9 @@ export class PlayerService {
   ) {}
 
   private async findPlayerById(playerId: number): Promise<Partial<Player>> {
-    const player = await this.playerRepository.findOne(playerId);
+    const player = await this.playerRepository.findOne(playerId, {
+      relations: ['sessions', 'sessions.registeredPlayers'],
+    });
     if (!player) {
       throw new NotFoundException('Player not found');
     }
@@ -32,10 +34,8 @@ export class PlayerService {
     const totalPages = Math.ceil(totalPlayers / paginationDto.limit);
     const players = await this.playerRepository
       .createQueryBuilder('player')
-      // add relation with technical role to obtain the role of the player
-      // .leftJoinAndSelect('player.technicalRoles', 'technicalRoles')
-      // add relation to get the player's guilds
       .leftJoinAndSelect('player.guilds', 'guilds')
+      .leftJoinAndSelect('player.sessions', 'sessions')
       .skip(skippedItems)
       .take(paginationDto.limit)
       .getMany();

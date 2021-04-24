@@ -10,7 +10,7 @@ export class Game {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field({ nullable: true })
+  @Field({ nullable: false })
   @Column()
   name: string;
 
