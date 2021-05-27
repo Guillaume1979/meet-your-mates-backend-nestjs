@@ -21,7 +21,9 @@ export class AuthService {
       discordId,
     });
     if (playerToCheck) {
-      player = playerToCheck;
+      //todo vérifier que la mise à jour se fait bien seulement sur les champs modifiés et pas sur les champs non présents dans les infos Discord (sessions...)
+      await this.playerRepository.update({ discordId }, user);
+      player = await this.playerRepository.findOne({ discordId });
     } else {
       player = await this.createUser(user);
     }

@@ -1,14 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PlayerModule } from './resources/player/player.module';
-import { GuildModule } from './resources/guild/guild.module';
 import { DatabaseModule } from './config/database/database.module';
 import { ConfigModule } from '@nestjs/config';
-import { DataLoadingService } from './resources/data-loading.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Player } from './resources/player/entities/player.entity';
-import { Guild } from './resources/guild/entities/guild.entity';
 import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';

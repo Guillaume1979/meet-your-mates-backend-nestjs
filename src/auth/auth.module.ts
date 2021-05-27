@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { DiscordStrategy } from './strategies/discord.strategy';
@@ -17,6 +17,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '43200s' }, //12 heures
     }),
+    HttpModule,
   ],
   providers: [
     AuthService,
