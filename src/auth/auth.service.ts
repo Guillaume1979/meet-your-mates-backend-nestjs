@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { HttpService, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Player } from '../resources/player/entities/player.entity';
 import { Repository } from 'typeorm';
-import { UserDetails } from './utils/auth-interfaces';
+import { DiscordToken } from './utils/auth-interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { PlayerRoleEnum } from '../enums/player-role.enum';
+import { DiscordUser } from './utils/discord-user';
 
 @Injectable()
 export class AuthService {
@@ -12,16 +13,25 @@ export class AuthService {
     @InjectRepository(Player)
     private readonly playerRepository: Repository<Player>,
     private readonly jwtService: JwtService,
+    private readonly httpService: HttpService,
   ) {}
 
-  async validateUser(user: UserDetails): Promise<Player> {
+  async login(token: DiscordToken): Promise<{ mym_token: string }> {
+    const userInfoFromDiscord = await this.checkDiscordAuthAndGetUserInfo(
+      token,
+    );
+    const player = await this.validateUser(userInfoFromDiscord);
+    return this.generateJwtToken(player);
+  }
+
+  async validateUser(user: DiscordUser): Promise<Player> {
     const { discordId } = user;
     let player: Player;
     const playerToCheck: Player = await this.playerRepository.findOne({
       discordId,
     });
     if (playerToCheck) {
-      //todo vérifier que la mise à jour se fait bien seulement sur les champs modifiés et pas sur les champs non présents dans les infos Discord (sessions...)
+      //todo : vérifier que la mise à jour se fait bien seulement sur les champs modifiés et pas sur les champs non présents dans les infos Discord (sessions...)
       await this.playerRepository.update({ discordId }, user);
       player = await this.playerRepository.findOne({ discordId });
     } else {
@@ -30,7 +40,7 @@ export class AuthService {
     return player;
   }
 
-  async createUser(user: UserDetails): Promise<Player> {
+  async createUser(user: DiscordUser): Promise<Player> {
     const { username, email, discordId, avatar } = user;
     const playerToCreate: Partial<Player> = {
       username,
@@ -39,20 +49,34 @@ export class AuthService {
       avatar,
       role: PlayerRoleEnum.USER,
     } as Player;
-
-    //TODO A tester cette façon de faire. Voir comment gérer la création du rôle de cette façon
-    // const toto: CreatePlayerDto = await this.playerRepository.create(user);
     return await this.playerRepository.save(playerToCreate);
   }
 
-  async login(user: Player): Promise<{ access_token }> {
+  generateJwtToken(player: Player): { mym_token: string } {
     const payload = {
-      username: user.username,
-      userId: user.id,
-      role: user.role,
+      username: player.username,
+      userId: player.id,
+      role: player.role,
     };
     return {
-      access_token: this.jwtService.sign(payload),
+      mym_token: this.jwtService.sign(payload),
     };
+  }
+
+  async checkDiscordAuthAndGetUserInfo(
+    token: DiscordToken,
+  ): Promise<DiscordUser> {
+    return await this.httpService
+      .get('https://discord.com/api/v8/users/@me', {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`,
+        },
+      })
+      .toPromise()
+      .then((discordResponse) => {
+        let data = discordResponse.data;
+        return new DiscordUser(data.username, data.id, data.email, data.avatar);
+      });
+    //todo : ajouter le .catch
   }
 }

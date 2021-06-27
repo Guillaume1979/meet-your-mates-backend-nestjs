@@ -17,33 +17,8 @@ async function bootstrap() {
     }),
   );
 
-  // app.use((req, res, next) => {
-  //   res.setHeader('Access-Control-Allow-Origin', '*');
-  //   res.header(
-  //     'Access-Control-Allow-Headers',
-  //     'Origin, X-Requested-With, Content-Type, Accept',
-  //   );
-  //   next();
-  // });
-
   app.enableCors({
-    origin: [
-      'http://localhost:4200',
-      // 'http://localhost:3000',
-      // 'https://discord.com/api/oauth2/authorize',
-    ],
-    // allowedHeaders: [
-    //   // 'Content-Type, Authorization, X-Track, X-Super-Properties, X-Context-Properties, X-Failed-Requests, X-Fingerprint, X-RPC-Proxy, X-Debug-Options, x-client-trace-id, If-None-Match, Range, X-RateLimit-Precision',
-    //   'Access-Control-Allow-Origin',
-    //   'Access-Control-Allow-Headers',
-    //   'application/json, text/plain, */*',
-    // ],
-    // exposedHeaders: [
-    //   'Access-Control-Allow-Origin',
-    //   'Access-Control-Allow-Headers',
-    // ],
-    // credentials: true,
-    // preflightContinue: true,
+    origin: ['http://localhost:4200'],
   });
 
   app.useGlobalPipes(
@@ -59,4 +34,5 @@ async function bootstrap() {
   await app.listen(port);
   console.log(`Server started on port : ${port}`);
 }
+
 bootstrap();

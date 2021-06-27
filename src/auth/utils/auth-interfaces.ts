@@ -1,6 +1,4 @@
-export interface UserDetails {
-  username: string;
-  discordId: string;
-  email: string;
-  avatar: string;
+export interface DiscordToken {
+  provider: string;
+  access_token: string;
 }
