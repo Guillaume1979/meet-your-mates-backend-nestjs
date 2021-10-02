@@ -1,4 +1,9 @@
-import { HttpService, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpService,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Player } from '../resources/player/entities/player.entity';
 import { Repository } from 'typeorm';
@@ -55,7 +60,7 @@ export class AuthService {
   generateJwtToken(player: Player): { mym_token: string } {
     const payload = {
       username: player.username,
-      userId: player.id,
+      id: player.id,
       role: player.role,
     };
     return {
@@ -66,17 +71,25 @@ export class AuthService {
   async checkDiscordAuthAndGetUserInfo(
     token: DiscordToken,
   ): Promise<DiscordUser> {
-    return await this.httpService
-      .get('https://discord.com/api/v8/users/@me', {
-        headers: {
-          Authorization: `Bearer ${token.access_token}`,
-        },
-      })
-      .toPromise()
-      .then((discordResponse) => {
-        let data = discordResponse.data;
-        return new DiscordUser(data.username, data.id, data.email, data.avatar);
-      });
-    //todo : ajouter le .catch
+    try {
+      return await this.httpService
+        .get('https://discord.com/api/v8/users/@me', {
+          headers: {
+            Authorization: `Bearer ${token.access_token}`,
+          },
+        })
+        .toPromise()
+        .then((discordResponse) => {
+          let data = discordResponse.data;
+          return new DiscordUser(
+            data.username,
+            data.id,
+            data.email,
+            data.avatar,
+          );
+        });
+    } catch (err) {
+      throw new HttpException('Unknown discord user', HttpStatus.UNAUTHORIZED);
+    }
   }
 }
