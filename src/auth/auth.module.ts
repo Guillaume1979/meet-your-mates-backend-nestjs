@@ -1,7 +1,6 @@
 import { HttpModule, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { DiscordStrategy } from './strategies/discord.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Player } from '../resources/player/entities/player.entity';
 import { JwtModule } from '@nestjs/jwt';
@@ -21,7 +20,6 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
   ],
   providers: [
     AuthService,
-    DiscordStrategy,
     JwtStrategy,
     // todo : to activate
     // to provide JWT Guard globally
