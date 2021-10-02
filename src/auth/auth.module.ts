@@ -15,7 +15,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
     TypeOrmModule.forFeature([Player]),
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '43200s' }, //12 heures
+      signOptions: { expiresIn: '43200s' }, //12 hours
     }),
     HttpModule,
   ],
@@ -23,6 +23,8 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
     AuthService,
     DiscordStrategy,
     JwtStrategy,
+    // todo : to activate
+    // to provide JWT Guard globally
     // {
     //   provide: APP_GUARD,
     //   useClass: JwtAuthGuard,

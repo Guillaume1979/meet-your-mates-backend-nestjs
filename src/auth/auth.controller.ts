@@ -1,8 +1,9 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   Post,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -18,13 +19,13 @@ export class AuthController {
    * This is the route the user will visit to authenticate
    */
   @Public()
-  @Post('login') //todo : retour à typer
+  @Post('login')
   login(@Body() token: DiscordToken): Promise<{ mym_token }> {
     if (token.access_token) {
       console.log('discord token', token);
       return this.authService.login(token);
     } else {
-      throw new BadRequestException('Discord token left');
+      throw new HttpException('Discord token left', HttpStatus.BAD_REQUEST);
     }
   }
 
