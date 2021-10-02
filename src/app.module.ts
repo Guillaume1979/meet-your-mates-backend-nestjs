@@ -4,8 +4,6 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './config/database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { GraphQLModule } from '@nestjs/graphql';
-import { join } from 'path';
 import { ResourcesModule } from './resources/resources.module';
 
 const environment =
@@ -16,12 +14,6 @@ const environment =
     ConfigModule.forRoot({
       envFilePath: ['.env', environment],
       isGlobal: true,
-    }),
-    GraphQLModule.forRoot({
-      // debug: true,
-      playground: true,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      sortSchema: true,
     }),
     DatabaseModule,
     AuthModule,
