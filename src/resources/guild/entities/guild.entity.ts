@@ -10,6 +10,12 @@ export class Guild extends TimestampEntities {
   @Column({ nullable: false })
   name: string;
 
+  @Column({ nullable: true })
+  icon: string;
+
+  @Column({ nullable: true })
+  discordId: string;
+
   @ManyToMany(() => Player, (player) => player.guilds)
   members: Player[];
 }

@@ -8,10 +8,11 @@ import { jwtConstants } from './utils/constants';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { Guild } from '../resources/guild/entities/guild.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Player]),
+    TypeOrmModule.forFeature([Player, Guild]),
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '43200s' }, //12 hours

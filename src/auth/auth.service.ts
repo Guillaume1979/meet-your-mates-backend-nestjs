@@ -3,6 +3,7 @@ import {
   HttpService,
   HttpStatus,
   Injectable,
+  Logger,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Player } from '../resources/player/entities/player.entity';
@@ -11,6 +12,7 @@ import { DiscordToken } from './utils/auth-interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { PlayerRoleEnum } from '../enums/player-role.enum';
 import { DiscordUser } from './utils/discord-user';
+import { Guild } from '../resources/guild/entities/guild.entity';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +21,8 @@ export class AuthService {
     private readonly playerRepository: Repository<Player>,
     private readonly jwtService: JwtService,
     private readonly httpService: HttpService,
+    @InjectRepository(Guild)
+    private readonly guildRepository: Repository<Guild>,
   ) {}
 
   async login(token: DiscordToken): Promise<{ mym_token: string }> {
@@ -26,6 +30,10 @@ export class AuthService {
       token,
     );
     const player = await this.validateUser(userInfoFromDiscord);
+    await this.updateGuilds(token);
+
+    // todo : ajouter la relation guild/player
+
     return this.generateJwtToken(player);
   }
 
@@ -61,7 +69,9 @@ export class AuthService {
     const payload = {
       username: player.username,
       id: player.id,
+      avatar: player.avatar,
       role: player.role,
+      discordId: player.discordId,
     };
     return {
       mym_token: this.jwtService.sign(payload),
@@ -91,5 +101,35 @@ export class AuthService {
     } catch (err) {
       throw new HttpException('Unknown discord user', HttpStatus.UNAUTHORIZED);
     }
+  }
+
+  async updateGuilds(token: DiscordToken): Promise<void> {
+    await this.httpService
+      .get('https://discord.com/api/v8/users/@me/guilds', {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`,
+        },
+      })
+      .toPromise()
+      .then(async (discordResponse) => {
+        let guilds = discordResponse.data;
+        for await (const guild of guilds) {
+          const guildChecked = await this.guildRepository.findOne({
+            discordId: guild.id,
+          });
+          if (guildChecked) {
+            guildChecked.discordId = guild.id;
+            guildChecked.name = guild.name;
+            guildChecked.icon = guild.icon;
+            await this.guildRepository.save(guildChecked);
+          } else {
+            let guildToAdd = new Guild();
+            guildToAdd.name = guild.name;
+            guildToAdd.discordId = guild.id;
+            guildToAdd.icon = guild.icon;
+            await this.guildRepository.save(guildToAdd);
+          }
+        }
+      });
   }
 }
