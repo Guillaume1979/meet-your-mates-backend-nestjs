@@ -37,6 +37,13 @@ export class PlayerController {
     return this.playerService.getPlayersWithDeleted();
   }
 
+  @Get('countGuildMembers/:playerId')
+  getNumberOfGuildMemberByPlayer(
+    @Param('playerId', ParseIntPipe) playerId: number,
+  ): Promise<void> {
+    return this.playerService.countGuildMembersByPlayer(+playerId);
+  }
+
   @Put(':id')
   updatePLayer(
     @Param('id', ParseIntPipe) id: number,

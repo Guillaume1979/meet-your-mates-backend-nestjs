@@ -39,7 +39,7 @@ export class Player extends TimestampEntities {
   role: string;
 
   @ManyToMany(() => Guild, (guild) => guild.members, {
-    eager: true,
+    /*  eager: true,*/
     nullable: true,
   })
   @JoinTable()
@@ -48,9 +48,6 @@ export class Player extends TimestampEntities {
   @ManyToMany(() => Session, (session) => session.registeredPlayers, {
     nullable: true,
   })
-  @JoinTable(/*{
-    joinColumn: { name: 'registered_player' },
-    inverseJoinColumn: { name: 'session' },
-  }*/)
+  @JoinTable()
   sessions: Session[];
 }

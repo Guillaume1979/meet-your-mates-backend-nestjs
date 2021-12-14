@@ -35,7 +35,7 @@ export class GameService {
     private readonly http: HttpService,
     private readonly configService: ConfigService,
   ) {
-    this.loadGames();
+    // this.loadGames();
   }
 
   create(createGameInput: CreateGameInput) {

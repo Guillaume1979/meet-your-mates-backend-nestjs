@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { Player } from './entities/player.entity';
@@ -9,17 +10,24 @@ import { Repository } from 'typeorm';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { PaginationDto } from '../../generic/pagination.dto';
 import { PaginatedResultDto } from '../../generic/paginated-result.dto';
+import { GuildService } from '../guild/guild.service';
 
 @Injectable()
 export class PlayerService {
   constructor(
     @InjectRepository(Player)
     private readonly playerRepository: Repository<Player>,
+    private readonly guildService: GuildService,
   ) {}
 
   private async findPlayerById(playerId: number): Promise<Partial<Player>> {
     const player = await this.playerRepository.findOne(playerId, {
-      relations: ['sessions', 'sessions.registeredPlayers'],
+      relations: [
+        'sessions',
+        'sessions.registeredPlayers',
+        'guilds',
+        'guilds.members',
+      ],
     });
     if (!player) {
       throw new NotFoundException('Player not found');
@@ -86,5 +94,22 @@ export class PlayerService {
     } else {
       throw new NotFoundException('Player to delete not found');
     }
+  }
+
+  async countGuildMembersByPlayer(playerId: number) {
+    const player = await this.playerRepository.findOne(playerId);
+
+    for await (let guild of player.guilds) {
+      const numberOfMembers = await this.guildService
+        .findOne(guild.id)
+        .then((guild) => {
+          Logger.error(guild.members?.length);
+          return guild.members?.length;
+        });
+      Logger.verbose(JSON.stringify(numberOfMembers));
+    }
+    // player.guilds.forEach((guild) => {
+    //   const NumberOfMembers = this.guildService.findOne(guild.id).then((guild) => guild.members?.length);
+    // })
   }
 }

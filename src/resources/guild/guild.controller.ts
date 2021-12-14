@@ -6,6 +6,7 @@ import {
   Put,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { GuildService } from './guild.service';
 import { CreateGuildDto } from './dto/create-guild.dto';
@@ -15,28 +16,25 @@ import { UpdateGuildDto } from './dto/update-guild.dto';
 export class GuildController {
   constructor(private readonly guildService: GuildService) {}
 
-  // @Post()
-  // create(@Body() createGuildDto: CreateGuildDto) {
-  //   return this.guildService.create(createGuildDto);
-  // }
-
   @Get()
   findAll() {
     return this.guildService.findAll();
   }
+
+  // @Get(':playerId')
+  // findAllByPlayer(@Param('playerId', ParseIntPipe) playerId: number) {
+  //   return this.guildService.findAll(+playerId);
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.guildService.findOne(+id);
   }
 
-  // @Put(':id')
-  // update(@Param('id') id: string, @Body() updateGuildDto: UpdateGuildDto) {
-  //   return this.guildService.update(+id, updateGuildDto);
-  // }
-  //
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.guildService.remove(+id);
+  // @Get('countGuildMembers/:guildId')
+  // getPlayersWithDeleted(
+  //   @Param('guildId', ParseIntPipe) guildId: number,
+  // ): Promise<number> {
+  //   return this.guildService.countGuildMembers(+guildId);
   // }
 }
