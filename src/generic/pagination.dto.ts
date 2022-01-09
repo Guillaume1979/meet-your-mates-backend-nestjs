@@ -1,13 +1,9 @@
 import { IsNumber } from 'class-validator';
-import { Field, InputType, Int } from '@nestjs/graphql';
 
-@InputType()
 export class PaginationDto {
-  @Field(() => Int, { name: 'limit' })
   @IsNumber()
   private _limit: number;
 
-  @Field(() => Int, { name: 'page' })
   @IsNumber()
   private _page: number;
 
