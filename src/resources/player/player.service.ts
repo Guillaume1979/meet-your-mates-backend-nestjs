@@ -95,21 +95,4 @@ export class PlayerService {
       throw new NotFoundException('Player to delete not found');
     }
   }
-
-  async countGuildMembersByPlayer(playerId: number) {
-    const player = await this.playerRepository.findOne(playerId);
-
-    for await (let guild of player.guilds) {
-      const numberOfMembers = await this.guildService
-        .findOne(guild.id)
-        .then((guild) => {
-          Logger.error(guild.members?.length);
-          return guild.members?.length;
-        });
-      Logger.verbose(JSON.stringify(numberOfMembers));
-    }
-    // player.guilds.forEach((guild) => {
-    //   const NumberOfMembers = this.guildService.findOne(guild.id).then((guild) => guild.members?.length);
-    // })
-  }
 }

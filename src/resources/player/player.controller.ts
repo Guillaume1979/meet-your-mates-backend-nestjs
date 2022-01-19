@@ -40,15 +40,9 @@ export class PlayerController {
   }
 
   @Get('search/withdeleted')
+  @Roles(Role.ADMIN)
   getPlayersWithDeleted(): Promise<Player[]> {
     return this.playerService.getPlayersWithDeleted();
-  }
-
-  @Get('countGuildMembers/:playerId')
-  getNumberOfGuildMemberByPlayer(
-    @Param('playerId', ParseIntPipe) playerId: number,
-  ): Promise<void> {
-    return this.playerService.countGuildMembersByPlayer(+playerId);
   }
 
   @Put(':id')
@@ -64,6 +58,7 @@ export class PlayerController {
     this.playerService.deletePlayer(id);
   }
 
+  // todo :  à revoir
   @Get('dev/token')
   getDevToken(): { mym_token: string } {
     const payload = {
