@@ -28,6 +28,7 @@ async function bootstrap() {
       // suppress all attributes in the Json which doesn't correspond to my entities attributes
       whitelist: true,
       forbidNonWhitelisted: true,
+      forbidUnknownValues: true,
     }),
   );
   app.setGlobalPrefix('api');

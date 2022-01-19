@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { TimestampEntities } from '../../../generic/timestamp-entities';
 import { Guild } from '../../guild/entities/guild.entity';
-import { PlayerRoleEnum } from '../../../enums/player-role.enum';
+import { Role } from '../../../enums/role';
 import { Session } from '../../session/entities/session.entity';
 
 @Entity()
@@ -32,11 +32,11 @@ export class Player extends TimestampEntities {
 
   @Column({
     type: 'enum',
-    enum: PlayerRoleEnum,
-    default: PlayerRoleEnum.USER,
+    enum: Role,
+    default: Role.USER,
     nullable: false,
   })
-  role: string;
+  roles: Role[];
 
   @ManyToMany(() => Guild, (guild) => guild.members, {
     /*  eager: true,*/

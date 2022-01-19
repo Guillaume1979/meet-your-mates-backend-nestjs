@@ -7,7 +7,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Public } from './utils/public-decorator';
+import { Public } from '../decorator/public-decorator';
 import { DiscordToken } from './utils/auth-interfaces';
 
 @Controller('auth')

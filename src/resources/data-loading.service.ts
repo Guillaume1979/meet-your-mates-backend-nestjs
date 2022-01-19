@@ -32,7 +32,7 @@ export class DataLoadingService {
         email: 'guitou@mym.fr',
         discordId: '294251344401793024',
         age: 41,
-        role: 'admin',
+        roles: ['admin'],
         guilds: [],
         sessions: [{ id: 1 }, { id: 3 }],
       } as Player,
@@ -41,7 +41,7 @@ export class DataLoadingService {
         email: 'germain@mym.fr',
         discordId: '12',
         age: 37,
-        role: 'user',
+        roles: ['user'],
         sessions: [{ id: 1 }],
       } as Player,
       {
@@ -49,7 +49,7 @@ export class DataLoadingService {
         email: 'pinou@mym.fr',
         discordId: '13',
         age: 9,
-        role: 'user',
+        roles: ['user'],
         sessions: [{ id: 2 }, { id: 3 }],
       } as Player,
       {
@@ -57,7 +57,7 @@ export class DataLoadingService {
         email: 'capucine@mym.fr',
         discordId: '14',
         age: 11,
-        role: 'user',
+        roles: ['user'],
         sessions: [{ id: 2 }, { id: 3 }],
       } as Player,
       {
@@ -65,7 +65,7 @@ export class DataLoadingService {
         email: 'raphy@mym.fr',
         discordId: '15',
         age: 11,
-        role: 'user',
+        roles: ['user'],
         sessions: [{ id: 2 }, { id: 3 }],
       } as Player,
     ];

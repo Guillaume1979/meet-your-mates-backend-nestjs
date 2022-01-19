@@ -10,7 +10,7 @@ import { Player } from '../resources/player/entities/player.entity';
 import { Repository } from 'typeorm';
 import { DiscordToken } from './utils/auth-interfaces';
 import { JwtService } from '@nestjs/jwt';
-import { PlayerRoleEnum } from '../enums/player-role.enum';
+import { Role } from '../enums/role';
 import { DiscordUser } from './utils/discord-user';
 import { Guild } from '../resources/guild/entities/guild.entity';
 
@@ -60,7 +60,7 @@ export class AuthService {
       email,
       discordId,
       avatar,
-      role: PlayerRoleEnum.USER,
+      roles: [Role.USER],
     } as Player;
     return await this.playerRepository.save(playerToCreate);
   }
@@ -70,7 +70,7 @@ export class AuthService {
       username: player.username,
       id: player.id,
       avatar: player.avatar,
-      role: player.role,
+      roles: player.roles,
       discordId: player.discordId,
     };
     return {

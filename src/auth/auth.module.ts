@@ -9,6 +9,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { Guild } from '../resources/guild/entities/guild.entity';
+import { RolesGuard } from './guards/roles.guard';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { Guild } from '../resources/guild/entities/guild.entity';
     //   provide: APP_GUARD,
     //   useClass: JwtAuthGuard,
     // },
+    { provide: APP_GUARD, useClass: RolesGuard },
   ],
   controllers: [AuthController],
 })
