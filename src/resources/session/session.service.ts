@@ -11,6 +11,7 @@ export class SessionService {
     @InjectRepository(Session)
     private readonly sessionRepository: Repository<Session>,
   ) {}
+
   create(createSessionInput: CreateSessionInput) {
     return 'This action adds a new session';
   }
@@ -19,6 +20,13 @@ export class SessionService {
     return await this.sessionRepository.find({
       relations: ['registeredPlayers', 'game'],
       order: { date: 'ASC' },
+    });
+  }
+
+  async findNextSessions(number): Promise<Session[]> {
+    return await this.sessionRepository.find({
+      order: { date: 'DESC' },
+      take: number,
     });
   }
 
