@@ -9,10 +9,12 @@ import {
   Post,
   Put,
   Query,
+  Req,
+  Res,
+  UseGuards,
 } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import { Player } from './entities/player.entity';
-import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { PaginationDto } from '../../generic/pagination.dto';
 import { Roles } from '../../decorator/roles.decorator';
@@ -33,6 +35,7 @@ export class PlayerController {
   }
 
   @Get(':id')
+  @Roles(Role.ADMIN) // todo à enlever après les tests
   getPlayerById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Partial<Player>> {

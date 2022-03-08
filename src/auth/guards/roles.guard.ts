@@ -20,7 +20,7 @@ export class RolesGuard implements CanActivate {
 
     // on récupère l'utilisateur
     const { user } = context.switchToHttp().getRequest();
-    // si un utilisateur est fourni
+    // si un utilisateur est fourni on vérifie s'il a les droits
     if (user) {
       return requiredRoles.some((role) => user.roles?.includes(role));
     }

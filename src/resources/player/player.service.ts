@@ -10,14 +10,12 @@ import { Repository } from 'typeorm';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 import { PaginationDto } from '../../generic/pagination.dto';
 import { PaginatedResultDto } from '../../generic/paginated-result.dto';
-import { GuildService } from '../guild/guild.service';
 
 @Injectable()
 export class PlayerService {
   constructor(
     @InjectRepository(Player)
     private readonly playerRepository: Repository<Player>,
-    private readonly guildService: GuildService,
   ) {}
 
   private async findPlayerById(playerId: number): Promise<Partial<Player>> {

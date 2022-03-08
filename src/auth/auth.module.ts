@@ -25,10 +25,10 @@ import { RolesGuard } from './guards/roles.guard';
     JwtStrategy,
     // todo : to activate
     // to provide JWT Guard globally
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: JwtAuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
     { provide: APP_GUARD, useClass: RolesGuard },
   ],
   controllers: [AuthController],
