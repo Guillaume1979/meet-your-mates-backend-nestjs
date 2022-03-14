@@ -62,7 +62,8 @@ export class PlayerController {
   }
 
   // todo :  à revoir
-  @Get('dev/token')
+  /*@Get('dev/token')
+  @Roles(Role.ADMIN)
   getDevToken(): { mym_token: string } {
     const payload = {
       username: 'toto',
@@ -79,5 +80,5 @@ export class PlayerController {
     return {
       mym_token: 'Not possible in that environment',
     };
-  }
+  }*/
 }

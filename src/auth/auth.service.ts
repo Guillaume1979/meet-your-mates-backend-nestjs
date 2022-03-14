@@ -22,13 +22,9 @@ export class AuthService {
   ) {}
 
   async login(token: DiscordToken): Promise<{ mym_token: string }> {
-    const userInfoFromDiscord = await this.checkDiscordAuthAndGetUserInfo(
-      token,
-    );
+    const userInfoFromDiscord = await this.getUserInfoFromDiscord(token);
     const player = await this.validateUser(userInfoFromDiscord);
-    await this.updateGuilds(token);
-
-    // todo : ajouter la relation guild/player
+    await this.updateGuilds(token, player);
 
     return this.generateJwtToken(player);
   }
@@ -74,9 +70,7 @@ export class AuthService {
     };
   }
 
-  async checkDiscordAuthAndGetUserInfo(
-    token: DiscordToken,
-  ): Promise<DiscordUser> {
+  async getUserInfoFromDiscord(token: DiscordToken): Promise<DiscordUser> {
     try {
       const discordResponse$ = await this.httpService.get(
         'https://discord.com/api/v8/users/@me',
@@ -95,7 +89,7 @@ export class AuthService {
     }
   }
 
-  async updateGuilds(token: DiscordToken): Promise<void> {
+  async updateGuilds(token: DiscordToken, player: Player): Promise<void> {
     await firstValueFrom(
       this.httpService.get('https://discord.com/api/v8/users/@me/guilds', {
         headers: {
@@ -105,23 +99,29 @@ export class AuthService {
     )
       .then(async (discordResponse) => {
         let guilds = discordResponse.data;
+        player.guilds = [];
         for await (const guild of guilds) {
           const guildChecked = await this.guildRepository.findOne({
             discordId: guild.id,
           });
-          if (guildChecked) {
+          // update existing guilds
+          if (guildChecked !== undefined) {
             guildChecked.discordId = guild.id;
             guildChecked.name = guild.name;
             guildChecked.icon = guild.icon;
-            await this.guildRepository.save(guildChecked);
+            const guildInBase = await this.guildRepository.save(guildChecked);
+            player.guilds.push(guildInBase);
           } else {
+            // create new guilds
             let guildToAdd = new Guild();
             guildToAdd.name = guild.name;
             guildToAdd.discordId = guild.id;
             guildToAdd.icon = guild.icon;
-            await this.guildRepository.save(guildToAdd);
+            const guildInBase = await this.guildRepository.save(guildToAdd);
+            player.guilds.push(guildInBase);
           }
         }
+        await this.addGuildToThePlayer(player);
       })
       .catch(
         () =>
@@ -130,5 +130,9 @@ export class AuthService {
             HttpStatus.GATEWAY_TIMEOUT,
           ),
       );
+  }
+
+  async addGuildToThePlayer(player: Player): Promise<void> {
+    await this.playerRepository.save(player);
   }
 }
