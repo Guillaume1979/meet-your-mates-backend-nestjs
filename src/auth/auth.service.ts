@@ -1,10 +1,5 @@
-import {
-  HttpException,
-  HttpService,
-  HttpStatus,
-  Injectable,
-  Logger,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Player } from '../resources/player/entities/player.entity';
 import { Repository } from 'typeorm';
@@ -13,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Role } from '../enums/role';
 import { DiscordUser } from './utils/discord-user';
 import { Guild } from '../resources/guild/entities/guild.entity';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -82,35 +78,31 @@ export class AuthService {
     token: DiscordToken,
   ): Promise<DiscordUser> {
     try {
-      return await this.httpService
-        .get('https://discord.com/api/v8/users/@me', {
+      const discordResponse$ = await this.httpService.get(
+        'https://discord.com/api/v8/users/@me',
+        {
           headers: {
             Authorization: `Bearer ${token.access_token}`,
           },
-        })
-        .toPromise()
-        .then((discordResponse) => {
-          let data = discordResponse.data;
-          return new DiscordUser(
-            data.username,
-            data.id,
-            data.email,
-            data.avatar,
-          );
-        });
+        },
+      );
+      return firstValueFrom(discordResponse$).then((discordResponse) => {
+        let data = discordResponse.data;
+        return new DiscordUser(data.username, data.id, data.email, data.avatar);
+      });
     } catch (err) {
       throw new HttpException('Unknown discord user', HttpStatus.UNAUTHORIZED);
     }
   }
 
   async updateGuilds(token: DiscordToken): Promise<void> {
-    await this.httpService
-      .get('https://discord.com/api/v8/users/@me/guilds', {
+    await firstValueFrom(
+      this.httpService.get('https://discord.com/api/v8/users/@me/guilds', {
         headers: {
           Authorization: `Bearer ${token.access_token}`,
         },
-      })
-      .toPromise()
+      }),
+    )
       .then(async (discordResponse) => {
         let guilds = discordResponse.data;
         for await (const guild of guilds) {
@@ -130,6 +122,13 @@ export class AuthService {
             await this.guildRepository.save(guildToAdd);
           }
         }
-      });
+      })
+      .catch(
+        () =>
+          new HttpException(
+            'Update guilds from Discord failed',
+            HttpStatus.GATEWAY_TIMEOUT,
+          ),
+      );
   }
 }
