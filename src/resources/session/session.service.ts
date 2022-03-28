@@ -4,6 +4,7 @@ import { UpdateSessionInput } from './dto/update-session.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Session } from './entities/session.entity';
 import { Repository } from 'typeorm';
+import { Public } from '../../decorator/public-decorator';
 
 @Injectable()
 export class SessionService {
@@ -19,15 +20,19 @@ export class SessionService {
   async findAll(): Promise<Session[]> {
     return await this.sessionRepository.find({
       relations: ['registeredPlayers', 'game'],
-      order: { date: 'ASC' },
+      order: { date: 'DESC' },
     });
   }
 
-  async findNextSessions(number): Promise<Session[]> {
-    return await this.sessionRepository.find({
-      order: { date: 'DESC' },
-      take: number,
-    });
+  async findNextSessions(number, player): Promise<Session[]> {
+    return await this.sessionRepository
+      .createQueryBuilder('sessions')
+      .leftJoin('sessions.registeredPlayers', 'players')
+      .leftJoinAndSelect('sessions.game', 'game')
+      .where('players.id = :id', { id: player.id })
+      .take(number)
+      .orderBy({ 'sessions.date': 'DESC' })
+      .getMany();
   }
 
   findOne(id: number) {

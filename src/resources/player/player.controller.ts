@@ -35,7 +35,6 @@ export class PlayerController {
   }
 
   @Get(':id')
-  @Roles(Role.ADMIN) // todo à enlever après les tests
   getPlayerById(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Partial<Player>> {
@@ -57,6 +56,7 @@ export class PlayerController {
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN)
   deletePlayer(@Param('id', ParseIntPipe) id: number) {
     this.playerService.deletePlayer(id);
   }

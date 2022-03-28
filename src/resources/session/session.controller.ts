@@ -1,7 +1,8 @@
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { SessionService } from './session.service';
 import { Session } from './entities/session.entity';
-import { Public } from '../../decorator/public-decorator';
+import { User } from '../../decorator/user.decorator';
+import { Player } from '../player/entities/player.entity';
 
 @Controller('sessions')
 export class SessionController {
@@ -12,11 +13,11 @@ export class SessionController {
     return this.sessionService.findAll();
   }
 
-  @Public()
   @Get('/next-sessions/:numberOfSessions')
   getNextSessions(
     @Param('numberOfSessions', ParseIntPipe) numberOfSessions: Number,
+    @User() user: Player,
   ): Promise<Session[]> {
-    return this.sessionService.findNextSessions(+numberOfSessions);
+    return this.sessionService.findNextSessions(+numberOfSessions, user);
   }
 }
