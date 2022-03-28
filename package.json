@@ -1,8 +1,8 @@
 {
   "name": "meet-your-mates-backend-nest-js",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Backend of Meet Your Mates Application",
+  "author": "Guillaume Guibet",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

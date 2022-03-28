@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Session } from './session/entities/session.entity';
 import { Game } from './game/entities/game.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class DataLoadingService {
@@ -15,8 +16,11 @@ export class DataLoadingService {
     private readonly guildRepository: Repository<Guild>,
     @InjectRepository(Session)
     private readonly sessionRepository: Repository<Session>,
+    private readonly configService: ConfigService,
   ) {
-    this.initDB().then((value) => console.log('Database loaded'));
+    if (this.configService.get('PRODUCTION') === 'false') {
+      this.initDB().then((value) => console.log('Database loaded'));
+    }
   }
 
   private async initDB() {

@@ -16,6 +16,8 @@ import { UpdateGuildDto } from './dto/update-guild.dto';
 export class GuildController {
   constructor(private readonly guildService: GuildService) {}
 
+  // todo : User decorateur partout ?
+
   @Get()
   findAll() {
     return this.guildService.findAll();
