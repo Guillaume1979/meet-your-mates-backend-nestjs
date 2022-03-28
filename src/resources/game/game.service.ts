@@ -46,14 +46,6 @@ export class GameService {
     return await this.gameRepository.find({ order: { name: 'ASC' } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} game`;
-  }
-
-  update(id: number, updateGameInput: UpdateGameInput) {
-    return `This action updates a #${id} game`;
-  }
-
   remove(id: number) {
     return `This action removes a #${id} game`;
   }
