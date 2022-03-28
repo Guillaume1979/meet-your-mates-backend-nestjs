@@ -38,7 +38,7 @@ export class DataLoadingService {
         age: 41,
         roles: ['admin'],
         guilds: [],
-        sessions: [{ id: 1 }, { id: 3 }],
+        sessions: [{ id: 1 }, { id: 3 }, { id: 4 }, { id: 6 }],
       } as Player,
       {
         username: 'Germain',
@@ -54,7 +54,7 @@ export class DataLoadingService {
         discordId: '13',
         age: 9,
         roles: ['user'],
-        sessions: [{ id: 2 }, { id: 3 }],
+        sessions: [{ id: 2 }, { id: 3 }, { id: 6 }],
       } as Player,
       {
         username: 'Capucine',
@@ -104,6 +104,18 @@ export class DataLoadingService {
       {
         game: { name: 'Animal Crossing', category: 'Game' },
         date: '2020-07-23T22:00:00.000Z',
+      } as Session,
+      {
+        game: { name: 'Endless Space 2', category: 'Game' },
+        date: '2022-02-18T21:00:00.000Z',
+      } as Session,
+      {
+        game: { name: 'Star Citizen', category: 'Game' },
+        date: '2022-03-30T18:00:00.000Z',
+      } as Session,
+      {
+        game: { name: 'Mario Kart', category: 'Game' },
+        date: '2021-10-02T11:00:00.000Z',
       } as Session,
     ];
     await this.sessionRepository.save(sessions);
