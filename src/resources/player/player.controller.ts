@@ -20,6 +20,7 @@ import { PaginationDto } from '../../generic/pagination.dto';
 import { Roles } from '../../decorator/roles.decorator';
 import { Role } from '../../enums/role';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '../../decorator/user.decorator';
 
 @Controller('players')
 export class PlayerController {
@@ -39,6 +40,14 @@ export class PlayerController {
     @Param('id', ParseIntPipe) id: number,
   ): Promise<Partial<Player>> {
     return this.playerService.getPlayerById(id);
+  }
+
+  @Get('/dashboard/:numberOfSessions')
+  getDashboardData(
+    @User() user: Player,
+    @Param('numberOfSessions', ParseIntPipe) numberOfSessions: number,
+  ): Promise<Partial<Player>> {
+    return this.playerService.getDashboardData(+numberOfSessions, user);
   }
 
   @Get('search/withdeleted')

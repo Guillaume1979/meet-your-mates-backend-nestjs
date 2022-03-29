@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Session } from './entities/session.entity';
 import { Repository } from 'typeorm';
+import { Player } from '../player/entities/player.entity';
 
 @Injectable()
 export class SessionService {
@@ -17,14 +18,12 @@ export class SessionService {
     });
   }
 
-  async findNextSessions(number, player): Promise<Session[]> {
-    return await this.sessionRepository
-      .createQueryBuilder('sessions')
-      .leftJoin('sessions.registeredPlayers', 'players')
-      .leftJoinAndSelect('sessions.game', 'game')
-      .where('players.id = :id', { id: player.id })
-      .take(number)
-      .orderBy({ 'sessions.date': 'DESC' })
-      .getMany();
+  async findPlayersBySession(sessionId: number): Promise<Player[]> {
+    const { registeredPlayers, ...rest } = await this.sessionRepository
+      .createQueryBuilder('session')
+      .where('session.id = :id', { id: sessionId })
+      .leftJoinAndSelect('sessions.registeredPlayers', 'players')
+      .getOne();
+    return registeredPlayers;
   }
 }

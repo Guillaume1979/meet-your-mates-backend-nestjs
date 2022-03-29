@@ -13,11 +13,10 @@ export class SessionController {
     return this.sessionService.findAll();
   }
 
-  @Get('/next-sessions/:numberOfSessions')
-  getNextSessions(
-    @Param('numberOfSessions', ParseIntPipe) numberOfSessions: Number,
-    @User() user: Player,
-  ): Promise<Session[]> {
-    return this.sessionService.findNextSessions(+numberOfSessions, user);
+  @Get('registredPlayers/:sessionId')
+  getRegisteredPlayersBySession(
+    @Param('sessionId', ParseIntPipe) sessionId: number,
+  ): Promise<Player[]> {
+    return this.sessionService.findPlayersBySession(+sessionId);
   }
 }

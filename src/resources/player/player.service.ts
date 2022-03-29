@@ -58,6 +58,30 @@ export class PlayerService {
     return this.findPlayerById(id);
   }
 
+  async getDashboardData(
+    numberOfSessions: number,
+    user: Player,
+  ): Promise<Partial<Player>> {
+    const player = await this.playerRepository
+      .createQueryBuilder('player')
+      .leftJoinAndSelect('player.sessions', 'sessions')
+      .leftJoinAndSelect('sessions.registeredPlayers', 'registeredPlayers')
+      .leftJoinAndSelect('sessions.game', 'game')
+      .leftJoinAndSelect('player.guilds', 'guilds')
+      .leftJoinAndSelect('guilds.members', 'members')
+      .where('player.id = :id', { id: user.id })
+      .orderBy('sessions.date', 'DESC')
+      .getOne();
+    // take only the number of sessions asked
+    player.sessions = player.sessions.splice(0, numberOfSessions);
+    // sort the guilds by number of members in DESC order
+    player.guilds.sort((guild1, guild2) => {
+      return guild2.members.length - guild1.members.length;
+    });
+    const { discordId, ...playerWithOutDiscord } = player;
+    return playerWithOutDiscord;
+  }
+
   getPlayersWithDeleted(): Promise<Player[]> {
     return this.playerRepository.find({ withDeleted: true });
   }
