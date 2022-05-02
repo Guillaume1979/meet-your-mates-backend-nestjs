@@ -82,8 +82,8 @@ export class PlayerService {
     return playerWithOutDiscord;
   }
 
-  getPlayersWithDeleted(): Promise<Player[]> {
-    return this.playerRepository.find({ withDeleted: true });
+  async getPlayersWithDeleted(): Promise<Player[]> {
+    return await this.playerRepository.find({ withDeleted: true });
   }
 
   async updatePlayer(
