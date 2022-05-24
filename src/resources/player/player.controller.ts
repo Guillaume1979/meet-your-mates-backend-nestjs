@@ -35,6 +35,11 @@ export class PlayerController {
     return this.playerService.getPlayers(paginationDto);
   }
 
+  @Get('sessions')
+  getSessions(@User() user: Player): Promise<Player> {
+    return this.playerService.getPlayerSessions(user);
+  }
+
   @Get(':id')
   getPlayerById(
     @Param('id', ParseIntPipe) id: number,

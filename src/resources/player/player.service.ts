@@ -117,4 +117,12 @@ export class PlayerService {
       throw new NotFoundException('Player to delete not found');
     }
   }
+
+  async getPlayerSessions(user: Player): Promise<Player> {
+    const res = await this.playerRepository.findOne(user.id, {
+      relations: ['sessions', 'sessions.registeredPlayers'],
+    });
+    console.log(res);
+    return res;
+  }
 }
