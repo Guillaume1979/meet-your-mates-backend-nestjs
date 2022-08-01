@@ -20,6 +20,18 @@ export class Session extends TimestampEntities {
   @Column()
   date: string;
 
+  // minimum number of players
+  @Column({ default: 0 })
+  minPlayers: number;
+
+  // maximum number of players
+  @Column({ default: 0 })
+  maxPlayers: number;
+
   @ManyToMany(() => Player, (player) => player.sessions)
   registeredPlayers: Player[];
+
+  // list of players beyond the maximum number of players waiting for a place
+  @ManyToMany(() => Player, (player) => player.sessions)
+  queueingPlayers: Player[];
 }
