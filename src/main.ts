@@ -1,15 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import morgan from 'morgan';
 import helmet from 'helmet';
 import { ConfigService } from '@nestjs/config';
+import { LoggingInterceptor } from './middleware/logging.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   const port = configService.get('APP_PORT');
-  app.use(morgan('dev'));
+
   app.use(
     helmet({
       contentSecurityPolicy:
@@ -20,6 +20,8 @@ async function bootstrap() {
   app.enableCors({
     origin: ['http://localhost:4200'],
   });
+
+  app.useGlobalInterceptors(new LoggingInterceptor());
 
   app.useGlobalPipes(
     new ValidationPipe({

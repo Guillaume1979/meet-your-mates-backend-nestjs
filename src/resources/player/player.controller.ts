@@ -3,15 +3,10 @@ import {
   Controller,
   Delete,
   Get,
-  Logger,
   Param,
   ParseIntPipe,
-  Post,
   Put,
   Query,
-  Req,
-  Res,
-  UseGuards,
 } from '@nestjs/common';
 import { PlayerService } from './player.service';
 import { Player } from './entities/player.entity';
