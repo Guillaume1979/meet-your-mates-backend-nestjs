@@ -32,13 +32,13 @@ export class AuthService {
   async validateUser(user: DiscordUser): Promise<Player> {
     const { discordId } = user;
     let player: Player;
-    const playerToCheck: Player = await this.playerRepository.findOne({
+    const playerToCheck: Player = await this.playerRepository.findOneBy({
       discordId,
     });
     if (playerToCheck) {
       //todo : vérifier que la mise à jour se fait bien seulement sur les champs modifiés et pas sur les champs non présents dans les infos Discord (sessions...)
       await this.playerRepository.update({ discordId }, user);
-      player = await this.playerRepository.findOne({ discordId });
+      player = await this.playerRepository.findOneBy({ discordId });
     } else {
       player = await this.createUser(user);
     }
@@ -102,7 +102,9 @@ export class AuthService {
         player.guilds = [];
         for await (const guild of guilds) {
           const guildChecked = await this.guildRepository.findOne({
-            discordId: guild.id,
+            where: {
+              discordId: guild.id,
+            },
           });
           // update existing guilds
           if (guildChecked !== undefined) {

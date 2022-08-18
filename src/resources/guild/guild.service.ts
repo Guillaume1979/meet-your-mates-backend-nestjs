@@ -11,10 +11,13 @@ export class GuildService {
   ) {}
 
   async findAll(): Promise<Guild[]> {
-    return await this.guildRepository.find({ relations: ['members'] });
+    return await this.guildRepository.find({ relations: { members: true } });
   }
 
   async findOne(id: number) {
-    return await this.guildRepository.findOne(id, { relations: ['members'] });
+    return await this.guildRepository.findOne({
+      where: { id },
+      relations: { members: true },
+    });
   }
 }

@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   Injectable,
-  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { Player } from './entities/player.entity';
@@ -19,13 +18,12 @@ export class PlayerService {
   ) {}
 
   private async findPlayerById(playerId: number): Promise<Partial<Player>> {
-    const player = await this.playerRepository.findOne(playerId, {
-      relations: [
-        'sessions',
-        'sessions.registeredPlayers',
-        'guilds',
-        'guilds.members',
-      ],
+    const player = await this.playerRepository.findOne({
+      where: { id: playerId },
+      relations: {
+        sessions: { registeredPlayers: true },
+        guilds: { members: true },
+      },
     });
     if (!player) {
       throw new NotFoundException('Player not found');
@@ -93,10 +91,10 @@ export class PlayerService {
     if (id !== player.id) {
       throw new BadRequestException('Player id is different from URI id');
     }
-    const playerToUpdate = await this.playerRepository.findOne(id);
+    const playerToUpdate = await this.playerRepository.findOneBy({ id });
     if (playerToUpdate !== undefined) {
       await this.playerRepository.save(player);
-      const playerUpdated = await this.playerRepository.findOne(id);
+      const playerUpdated = await this.playerRepository.findOneBy({ id });
       const { discordId, ...playerUpdatedWithoutDiscordId } = playerUpdated;
       return playerUpdatedWithoutDiscordId;
     } else {
@@ -105,22 +103,35 @@ export class PlayerService {
   }
 
   async deletePlayer(id: number): Promise<Player> {
-    const playerToDelete = await this.playerRepository.findOne(id);
+    const playerToDelete = await this.playerRepository.findOneBy({ id });
     if (playerToDelete !== undefined) {
       await this.playerRepository.softDelete(id);
       console.log(
         'joueur effacé : ',
-        await this.playerRepository.findOne(id, { withDeleted: true }),
+        await this.playerRepository.findOne({
+          where: { id },
+          withDeleted: true,
+        }),
       );
-      return await this.playerRepository.findOne(id, { withDeleted: true });
+      return await this.playerRepository.findOne({
+        where: { id },
+        withDeleted: true,
+      });
     } else {
       throw new NotFoundException('Player to delete not found');
     }
   }
 
   async getPlayerSessions(user: Player): Promise<Player> {
-    const res = await this.playerRepository.findOne(user.id, {
-      relations: ['sessions', 'sessions.registeredPlayers'],
+    const res = await this.playerRepository.findOne({
+      where: {
+        id: user.id,
+      },
+      relations: {
+        sessions: {
+          registeredPlayers: true,
+        },
+      },
     });
     console.log(res);
     return res;
