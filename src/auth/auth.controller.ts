@@ -21,11 +21,11 @@ export class AuthController {
   @Public()
   @Post('login')
   login(@Body() token: DiscordToken): Promise<{ mym_token }> {
-    if (token.access_token) {
+    if (token.access_token !== 'null') {
       console.log('discord token', token);
       return this.authService.login(token);
     } else {
-      throw new HttpException('Discord token left', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Discord token left', HttpStatus.UNAUTHORIZED);
     }
   }
 
